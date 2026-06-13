@@ -1,0 +1,81 @@
+name: Deploy Erodas Atlas
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # Rebuild every 6 hours to pick up vault changes
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+    # Also available as a manual "Run workflow" button in GitHub Actions
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout erodas-atlas
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Clone Korlornium vault
+        run: git clone --depth 1 https://github.com/austinczeller/Korlornium.git vault
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python deps
+        run: pip install pyyaml
+
+      - name: Sync vault content to content/
+        run: python scripts/sync-vault.py --vault vault --output content
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Cache Quartz plugins
+        uses: actions/cache@v4
+        with:
+          path: .quartz/plugins
+          key: ${{ runner.os }}-plugins-${{ hashFiles('quartz.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-plugins-
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Install Quartz community plugins
+        run: npx quartz plugin install
+
+      - name: Build site
+        run: npx quartz build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
