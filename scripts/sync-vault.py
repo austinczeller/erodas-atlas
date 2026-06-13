@@ -63,8 +63,9 @@ def parse_frontmatter(content: str) -> tuple[dict, str]:
     if end == -1:
         return {}, content
     try:
-        fm = yaml.safe_load(content[3:end]) or {}
-    except yaml.YAMLError:
+        # BaseLoader keeps all values as strings, avoiding date-parsing errors
+        fm = yaml.load(content[3:end], Loader=yaml.BaseLoader) or {}
+    except (yaml.YAMLError, ValueError):
         fm = {}
     body = content[end + 3:].lstrip("\n")
     return fm, body
@@ -77,12 +78,12 @@ def get_publish_mode(frontmatter: dict, rel_path: str) -> str | None:
         if part in EXCLUDED_FOLDERS:
             return None
 
-    publish = frontmatter.get("publish")
-    dg_publish = frontmatter.get("dg-publish")
+    publish = str(frontmatter.get("publish") or "").strip().lower()
+    dg_publish = str(frontmatter.get("dg-publish") or "").strip().lower()
 
-    if publish is True or dg_publish is True:
+    if publish == "true" or dg_publish == "true":
         return "full"
-    if isinstance(publish, str) and publish.lower() in ("description", "description-only"):
+    if publish in ("description", "description-only"):
         return "description"
 
     return None
