@@ -8,6 +8,9 @@ Publishing rules:
   publish: description  -> publish only text under the ## Description heading
 
 Blocked folders (never published): Sessions, Plot Lines, Player Characters, z_Assests
+
+Images: all image files (png/jpg/jpeg/gif/svg/webp) are copied from the vault
+so that ![[image.png]] embeds in published notes resolve correctly.
 """
 
 import os
@@ -41,6 +44,8 @@ OBSIDIAN_BLOCKS = [
     "tasks",
     "file-include",
 ]
+
+IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".avif"}
 
 # Frontmatter fields that are internal and should not be exposed
 INTERNAL_FIELDS = {
@@ -202,7 +207,25 @@ def sync_vault(vault_path: str, output_path: str):
             copied += 1
             print(f"  + {rel_path}")
 
-    print(f"\nDone: {copied} published, {skipped} skipped.")
+    # Copy image files so ![[image.png]] embeds resolve in published notes.
+    # Images are copied from anywhere in the vault (including z_Assests/Images/)
+    # but we skip .git and .obsidian internals.
+    IMAGE_SKIP = {".git", ".obsidian", ".claude"}
+    images_copied = 0
+    for root, dirs, files in os.walk(vault_path):
+        dirs[:] = [d for d in dirs if d not in IMAGE_SKIP]
+        for filename in files:
+            ext = os.path.splitext(filename)[1].lower()
+            if ext not in IMAGE_EXTENSIONS:
+                continue
+            filepath = os.path.join(root, filename)
+            rel_path = os.path.relpath(filepath, vault_path)
+            dest = os.path.join(output_path, rel_path)
+            os.makedirs(os.path.dirname(dest), exist_ok=True)
+            shutil.copy2(filepath, dest)
+            images_copied += 1
+
+    print(f"\nDone: {copied} notes published, {skipped} skipped, {images_copied} images copied.")
 
 
 def main():
