@@ -186,7 +186,22 @@ plugins:
       priority: 25
       display: mobile-only
   - source: github:quartz-community/note-properties
-    enabled: false
+    enabled: true
+    options:
+      hidePropertiesView: true
+      includeAll: false
+      includedProperties:
+        - description
+        - tags
+        - aliases
+      excludedProperties: []
+      delimiters: "---"
+      language: yaml
+    order: 5
+    layout:
+      position: beforeBody
+      priority: 15
+      display: all
   - source: github:quartz-community/unlisted-pages
     enabled: false
 layout:
