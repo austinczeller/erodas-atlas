@@ -44,6 +44,11 @@ jobs:
       - name: Copy map image into static dir
         run: cp vault/z_Assests/Images/Korlornium.png quartz/static/map/Korlornium.png
 
+      - name: Copy Calendarium data to static
+        run: |
+          mkdir -p quartz/static/calendar
+          cp vault/.obsidian/plugins/calendarium/data.json quartz/static/calendar/calendarium.json
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -66,6 +71,15 @@ jobs:
 
       - name: Build site
         run: npx quartz build
+
+      - name: Copy content images to public
+        run: |
+          find content -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.svg" -o -name "*.webp" -o -name "*.avif" \) | while IFS= read -r f; do
+            rel="${f#content/}"
+            destdir="public/$(dirname "$rel")"
+            mkdir -p "$destdir"
+            cp "$f" "$destdir/"
+          done
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

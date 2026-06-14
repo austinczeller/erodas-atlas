@@ -1,101 +1,33 @@
 @use "./variables.scss" as *;
 
 // ─────────────────────────────────────────────
-//  ERODAS ATLAS — Old Manuscript Theme
+//  ERODAS — Stone Archive Theme
 // ─────────────────────────────────────────────
 
-// ── 1. Paper grain texture overlay ───────────
-// A subtle SVG-based noise layer on top of everything
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-  opacity: 0.032;
-  background-size: 300px 300px;
+// ── 1. Top nav offset ─────────────────────────
+body {
+  padding-top: 48px;
 }
 
-// ── 2. Page background — aged parchment ──────
-:root[saved-theme="light"] body,
-:root:not([saved-theme="dark"]) body {
-  background-image:
-    // Very faint diagonal hatching (like old laid paper)
-    repeating-linear-gradient(
-      105deg,
-      transparent,
-      transparent 28px,
-      rgba(100, 70, 20, 0.018) 28px,
-      rgba(100, 70, 20, 0.018) 29px
-    ),
-    repeating-linear-gradient(
-      15deg,
-      transparent,
-      transparent 28px,
-      rgba(100, 70, 20, 0.012) 28px,
-      rgba(100, 70, 20, 0.012) 29px
-    );
-}
-
-// ── 3. Headings — rubricated manuscript style ─
-h1, h2 {
+// ── 2. Headings — cold engraved style ─────────
+h1 {
   color: var(--secondary);
-  font-variant-ligatures: common-ligatures;
-  letter-spacing: 0.04em;
-  text-shadow:
-    1px 1px 0 rgba(0,0,0,0.08),
-    0   0  8px rgba(var(--secondary), 0.1);
+  letter-spacing: 0.1em;
+  font-weight: 400;
+}
+
+h2 {
+  color: var(--secondary);
+  letter-spacing: 0.05em;
+  font-weight: 400;
 }
 
 h3, h4, h5, h6 {
   color: var(--dark);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
 }
 
-// ── 4. Drop cap on first article paragraph ────
-article.popover-hint > div > p:first-of-type::first-letter {
-  float: left;
-  font-family: 'Cinzel', serif;
-  font-size: 4.2em;
-  font-weight: 700;
-  line-height: 0.78;
-  color: var(--secondary);
-  margin: 0.06em 0.1em -0.02em 0;
-  text-shadow: 1px 2px 3px rgba(0,0,0,0.18);
-}
-
-// ── 5. Decorative horizontal rule ─────────────
-hr {
-  border: none;
-  height: 1px;
-  background: linear-gradient(to right, transparent, var(--secondary), transparent);
-  margin: 1.8em auto;
-  opacity: 0.45;
-  position: relative;
-
-  &::before {
-    content: '✦';
-    position: absolute;
-    top: -0.65em;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--light);
-    padding: 0 0.6em;
-    color: var(--secondary);
-    font-size: 0.9em;
-    opacity: 0.8;
-    letter-spacing: 0.2em;
-  }
-}
-
-// ── 6. Body text — slightly inked, warm ───────
-p, li, td, th {
-  font-variant-numeric: oldstyle-nums;
-  text-rendering: optimizeLegibility;
-}
-
-// ── 7. Internal links — illuminated style ─────
+// ── 3. Internal links ─────────────────────────
 a.internal {
   color: var(--secondary);
   text-decoration-color: color-mix(in srgb, var(--secondary) 30%, transparent);
@@ -108,25 +40,23 @@ a.internal {
   }
 }
 
-// ── 8. Sidebar — manuscript margin ruling ─────
+// ── 4. Sidebar ruling ─────────────────────────
 .left.sidebar {
-  border-right: 1px solid color-mix(in srgb, var(--secondary) 25%, transparent);
+  border-right: 1px solid color-mix(in srgb, var(--secondary) 18%, transparent);
 }
 
-// ── 9. Page title — ornate letterpress ────────
+// ── 5. Page title ─────────────────────────────
 .page-title a {
-  font-weight: 700;
-  letter-spacing: 0.18em;
+  font-weight: 400;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  font-size: 0.95em;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.12);
+  font-size: 0.9em;
 }
 
-// ── 10. Article container — aged paper feel ───
+// ── 6. Article margin line ────────────────────
 article.popover-hint {
   position: relative;
 
-  // Faint left margin line like a manuscript ruling
   &::before {
     content: '';
     position: absolute;
@@ -135,43 +65,52 @@ article.popover-hint {
     bottom: 0;
     width: 1px;
     background: linear-gradient(to bottom, transparent, var(--secondary), transparent);
-    opacity: 0.15;
+    opacity: 0.1;
   }
 }
 
-// ── 11. Blockquotes — marginalia style ────────
+// ── 7. Blockquotes — chiseled stone ───────────
 blockquote {
-  border-left: 3px solid var(--secondary);
-  border-left-style: solid;
+  border-left: 2px solid var(--secondary);
   padding-left: 1.2em;
   font-style: italic;
   color: var(--darkgray);
   opacity: 0.9;
+}
+
+// ── 8. HR — cold divider ──────────────────────
+hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--secondary), transparent);
+  margin: 1.8em auto;
+  opacity: 0.28;
   position: relative;
 
   &::before {
-    content: '"';
+    content: '◆';
     position: absolute;
-    left: -0.1em;
-    top: -0.3em;
-    font-size: 2em;
+    top: -0.56em;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--light);
+    padding: 0 0.5em;
     color: var(--secondary);
-    font-family: 'EB Garamond', serif;
-    opacity: 0.4;
-    line-height: 1;
+    font-size: 0.65em;
+    opacity: 0.65;
   }
 }
 
-// ── 12. Tables — scroll-like ──────────────────
+// ── 9. Tables ─────────────────────────────────
 table {
   border-collapse: collapse;
 
   th {
-    background: color-mix(in srgb, var(--secondary) 12%, var(--light));
+    background: color-mix(in srgb, var(--secondary) 10%, var(--light));
     color: var(--secondary);
     font-family: 'Cinzel', serif;
-    font-size: 0.8em;
-    letter-spacing: 0.08em;
+    font-size: 0.78em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     font-weight: 600;
   }
@@ -181,67 +120,432 @@ table {
   }
 }
 
-// ── 13. Code blocks — ink-stained ─────────────
+// ── 10. Code ──────────────────────────────────
 pre, code {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.87em;
 }
 
 pre {
-  border-left: 3px solid var(--secondary);
-  border-radius: 0 4px 4px 0;
+  border-left: 2px solid var(--secondary);
+  border-radius: 0 2px 2px 0;
 }
 
-// ── 14. Callouts — illuminated panels ─────────
+// ── 11. Callouts ──────────────────────────────
 .callout {
-  border-radius: 2px;
-  border-left-width: 3px;
+  border-radius: 0;
+  border-left-width: 2px;
 }
 
-// ── 15. Search bar — parchment style ──────────
-.search-bar {
-  font-family: 'EB Garamond', serif;
-  font-size: 1em;
-  font-style: italic;
-}
-
-// ── 16. Scrollbar — aged leather ──────────────
-::-webkit-scrollbar              { width: 8px; height: 8px; }
+// ── 12. Scrollbar ─────────────────────────────
+::-webkit-scrollbar              { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track        { background: var(--light); }
-::-webkit-scrollbar-thumb        { background: color-mix(in srgb, var(--secondary) 40%, var(--lightgray)); border-radius: 4px; }
+::-webkit-scrollbar-thumb        { background: color-mix(in srgb, var(--secondary) 35%, var(--lightgray)); border-radius: 0; }
 ::-webkit-scrollbar-thumb:hover  { background: var(--secondary); }
 
-// ── 17. Map link card on homepage ─────────────
+// ── 13. Homepage preface ──────────────────────
+.enc-preface {
+  border-left: 2px solid color-mix(in srgb, var(--secondary) 38%, transparent);
+  padding: 0.6em 1.4em;
+  margin: 1.2em 0 2em;
+
+  > em:first-child {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 0.78em;
+    letter-spacing: 0.15em;
+    color: var(--gray);
+    margin-bottom: 0.6em;
+    font-style: normal;
+    text-transform: uppercase;
+  }
+
+  blockquote {
+    border-left: none;
+    padding-left: 0;
+    font-size: 1.05em;
+    color: var(--darkgray);
+  }
+}
+
+// ── 14. Nav card column ───────────────────────
+.enc-nav-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+// ── 15. Map / utility cards ───────────────────
 .map-card {
-  display: block;
-  border: 1px solid color-mix(in srgb, var(--secondary) 35%, transparent);
-  border-radius: 3px;
-  padding: 1.4em 1.8em;
-  margin: 1.6em 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid color-mix(in srgb, var(--secondary) 28%, transparent);
+  border-radius: 0;
+  padding: 1.1em 1.5em;
+  margin: 0.5em 0;
   text-decoration: none !important;
-  background: color-mix(in srgb, var(--secondary) 5%, var(--light));
-  transition: background 0.2s, border-color 0.2s;
-  text-align: center;
+  background: color-mix(in srgb, var(--secondary) 4%, var(--light));
+  transition: background 0.18s, border-color 0.18s;
+  position: relative;
+
+  &::after {
+    content: '→';
+    color: var(--secondary);
+    opacity: 0.45;
+    font-family: 'Cinzel', serif;
+    font-size: 1em;
+    margin-left: 1.2em;
+    flex-shrink: 0;
+    transition: opacity 0.15s, transform 0.15s;
+  }
 
   &:hover {
-    background: color-mix(in srgb, var(--secondary) 10%, var(--light));
-    border-color: var(--secondary);
+    background: color-mix(in srgb, var(--secondary) 9%, var(--light));
+    border-color: color-mix(in srgb, var(--secondary) 55%, transparent);
+
+    &::after {
+      opacity: 0.8;
+      transform: translateX(3px);
+    }
   }
 
   .map-card-title {
     font-family: 'Cinzel', serif;
-    font-size: 1.15em;
-    font-weight: 700;
+    font-size: 0.95em;
+    font-weight: 400;
     color: var(--secondary);
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    margin-bottom: 0.3em;
   }
 
   .map-card-sub {
-    font-family: 'EB Garamond', serif;
+    font-family: 'Spectral', serif;
     font-style: italic;
+    font-size: 0.88em;
+    color: var(--darkgray);
+    margin-top: 0.15em;
+  }
+
+  &.map-card--vote {
+    border-color: color-mix(in srgb, var(--tertiary) 28%, transparent);
+    background: color-mix(in srgb, var(--tertiary) 4%, var(--light));
+
+    &:hover {
+      background: color-mix(in srgb, var(--tertiary) 9%, var(--light));
+      border-color: color-mix(in srgb, var(--tertiary) 55%, transparent);
+    }
+
+    &::after { color: var(--tertiary); }
+    .map-card-title { color: var(--tertiary); }
+  }
+}
+
+// ── 16. Continent grid ────────────────────────
+.continent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.2rem;
+  margin: 1.4em 0;
+}
+
+.continent-card {
+  border: 1px solid color-mix(in srgb, var(--secondary) 22%, transparent);
+  border-radius: 0;
+  padding: 1.2em 1.4em;
+  background: color-mix(in srgb, var(--secondary) 3%, var(--light));
+  position: relative;
+  outline: 1px solid transparent;
+  outline-offset: -4px;
+  transition: background 0.18s, border-color 0.18s, outline-color 0.18s;
+
+  &:hover {
+    background: color-mix(in srgb, var(--secondary) 7%, var(--light));
+    border-color: color-mix(in srgb, var(--secondary) 48%, transparent);
+    outline-color: color-mix(in srgb, var(--secondary) 10%, transparent);
+  }
+
+  // Corner accents — top-left
+  &::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: 9px;
+    height: 9px;
+    border-top: 1px solid var(--secondary);
+    border-left: 1px solid var(--secondary);
+  }
+
+  // Corner accents — bottom-right
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    width: 9px;
+    height: 9px;
+    border-bottom: 1px solid var(--secondary);
+    border-right: 1px solid var(--secondary);
+  }
+
+  h3 {
+    font-family: 'Cinzel', serif;
     font-size: 0.95em;
+    font-weight: 400;
+    color: var(--secondary);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.15em;
+
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: var(--tertiary); }
+  }
+
+  em {
+    display: block;
+    font-family: 'Spectral', serif;
+    font-size: 0.82em;
+    color: var(--gray);
+    margin-bottom: 0.7em;
+  }
+
+  p {
+    font-size: 0.92em;
+    line-height: 1.62;
     color: var(--darkgray);
   }
+}
+
+// ── 17. Top Navigation Bar ────────────────────
+#enc-topnav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9000;
+  height: 48px;
+  background: rgba(16, 19, 30, 0.96);
+  border-bottom: 1px solid rgba(123, 167, 188, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.enc-nav-inner {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 1.5rem;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.enc-nav-brand {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #7ba7bc;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-right: 2rem;
+  transition: color 0.15s;
+
+  &:hover { color: #a8c8d8; }
+}
+
+.enc-nav-sep {
+  width: 1px;
+  height: 22px;
+  background: rgba(123, 167, 188, 0.18);
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+
+.enc-nav-list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  gap: 0;
+  flex: 1;
+}
+
+.enc-nav-list > li {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.enc-nav-link,
+.enc-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 0.9rem;
+  height: 100%;
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  font-weight: 600;
+  color: #6a7894;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  white-space: nowrap;
+  transition: color 0.15s, background 0.15s;
+
+  &:hover, &.active {
+    color: #7ba7bc;
+    background: rgba(123, 167, 188, 0.06);
+  }
+}
+
+.enc-nav-arrow {
+  display: inline-block;
+  transition: transform 0.18s;
+  opacity: 0.45;
+  font-size: 8px;
+  line-height: 1;
+}
+
+.enc-has-dd:hover .enc-nav-arrow {
+  transform: rotate(180deg);
+}
+
+// Dropdown panel
+.enc-nav-dd {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 210px;
+  background: rgba(14, 17, 28, 0.98);
+  border: 1px solid rgba(123, 167, 188, 0.2);
+  border-top: none;
+  list-style: none;
+  padding: 5px 0;
+  margin: 0;
+  z-index: 9001;
+}
+
+.enc-has-dd:hover .enc-nav-dd {
+  display: block;
+}
+
+.enc-nav-dd li a {
+  display: block;
+  padding: 9px 16px;
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6a7894;
+  text-decoration: none;
+  transition: color 0.12s, background 0.12s, padding-left 0.12s;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #7ba7bc;
+    opacity: 0;
+    transition: opacity 0.12s;
+  }
+
+  &:hover {
+    color: #7ba7bc;
+    background: rgba(123, 167, 188, 0.06);
+    padding-left: 20px;
+
+    &::before { opacity: 1; }
+  }
+
+  &.active { color: #7ba7bc; }
+}
+
+// Hamburger (mobile)
+.enc-nav-ham {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 20px;
+  height: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-left: auto;
+  flex-shrink: 0;
+
+  span {
+    display: block;
+    height: 1px;
+    background: #7ba7bc;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+
+  &.open {
+    span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    span:nth-child(2) { opacity: 0; }
+    span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+  }
+}
+
+@media (max-width: 768px) {
+  .enc-nav-list {
+    display: none;
+    position: absolute;
+    top: 48px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    height: auto;
+    background: rgba(14, 17, 28, 0.98);
+    border-bottom: 1px solid rgba(123, 167, 188, 0.2);
+    padding: 6px 0;
+    z-index: 9000;
+
+    &.open { display: flex; }
+  }
+
+  .enc-nav-list > li {
+    height: auto;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .enc-nav-link,
+  .enc-nav-btn {
+    width: 100%;
+    height: 44px;
+    padding: 0 1.5rem;
+  }
+
+  .enc-nav-dd {
+    position: static;
+    border: none;
+    background: rgba(123, 167, 188, 0.04);
+    display: none !important;
+    width: 100%;
+  }
+
+  .enc-has-dd.dd-open .enc-nav-dd {
+    display: block !important;
+  }
+
+  .enc-nav-ham { display: flex; }
+  .enc-nav-sep { display: none; }
 }

@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=./quartz/plugins/quartz-plugins.schema.json
 configuration:
-  pageTitle: "Erodas Atlas"
-  pageTitleSuffix: " — Erodas Atlas"
+  pageTitle: "Erodian Encyclopedia"
+  pageTitleSuffix: " — Erodian Encyclopedia"
   enableSPA: true
   enablePopovers: true
   locale: en-US
@@ -19,29 +19,29 @@ configuration:
     cdnCaching: true
     typography:
       header: Cinzel
-      body: EB Garamond
+      body: Spectral
       code: JetBrains Mono
     colors:
       lightMode:
-        light: "#f0e6cf"
-        lightgray: "#d8c9a8"
-        gray: "#8a7458"
-        darkgray: "#3d2b1a"
-        dark: "#1e1208"
-        secondary: "#8b2020"
-        tertiary: "#9b7020"
-        highlight: "rgba(139, 32, 32, 0.1)"
-        textHighlight: "#f5e64288"
+        light: "#1a1e2e"
+        lightgray: "#252a3d"
+        gray: "#4a5268"
+        darkgray: "#8892a4"
+        dark: "#e8eaf0"
+        secondary: "#7ba7bc"
+        tertiary: "#a8c8d8"
+        highlight: "rgba(123, 167, 188, 0.12)"
+        textHighlight: "rgba(123, 167, 188, 0.28)"
       darkMode:
-        light: "#1a1008"
-        lightgray: "#2a1c0c"
-        gray: "#5a4532"
-        darkgray: "#c8a878"
-        dark: "#f0e0c0"
-        secondary: "#c04040"
-        tertiary: "#c09040"
-        highlight: "rgba(192, 64, 64, 0.15)"
-        textHighlight: "#c0904088"
+        light: "#1a1e2e"
+        lightgray: "#252a3d"
+        gray: "#4a5268"
+        darkgray: "#8892a4"
+        dark: "#e8eaf0"
+        secondary: "#7ba7bc"
+        tertiary: "#a8c8d8"
+        highlight: "rgba(123, 167, 188, 0.12)"
+        textHighlight: "rgba(123, 167, 188, 0.28)"
 plugins:
   - source: github:quartz-community/created-modified-date
     enabled: true
