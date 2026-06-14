@@ -41,6 +41,9 @@ jobs:
       - name: Sync vault content to content/
         run: python scripts/sync-vault.py --vault vault --output content
 
+      - name: Copy map image into static dir
+        run: cp vault/z_Assests/Images/Korlornium.png quartz/static/map/Korlornium.png
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
