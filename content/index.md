@@ -13,17 +13,17 @@ publish: true
 
 <div class="enc-nav-cards">
 
-<a href="/erodas-atlas/static/map/" class="map-card" data-router-ignore>
+<a href="static/map/" class="map-card enc-static-link">
   <div class="map-card-title">✦ Map of Korlornium ✦</div>
   <div class="map-card-sub">An interactive atlas — zoom, explore, and click any location</div>
 </a>
 
-<a href="/erodas-atlas/static/calendar/" class="map-card" data-router-ignore>
+<a href="static/calendar/" class="map-card enc-static-link">
   <div class="map-card-title">✦ Erodian Calendar ✦</div>
   <div class="map-card-sub">Track the in-world date, moons, and seasons of Erodas</div>
 </a>
 
-<a href="/erodas-atlas/static/vote/" class="map-card map-card--vote" data-router-ignore>
+<a href="static/vote/" class="map-card map-card--vote enc-static-link">
   <div class="map-card-title">✦ Vote: Next Adventure ✦</div>
   <div class="map-card-sub">Cast your voice — regions, vibes, and themes for the next campaign</div>
 </a>
