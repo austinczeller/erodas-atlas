@@ -23,25 +23,25 @@ configuration:
       code: JetBrains Mono
     colors:
       lightMode:
-        light: "#f5f0e8"
-        lightgray: "#e0d5c0"
-        gray: "#9c8a6e"
-        darkgray: "#4a3c2a"
-        dark: "#2c1f0e"
-        secondary: "#7a4f2a"
-        tertiary: "#c4a265"
-        highlight: "rgba(196, 162, 101, 0.15)"
+        light: "#f0e6cf"
+        lightgray: "#d8c9a8"
+        gray: "#8a7458"
+        darkgray: "#3d2b1a"
+        dark: "#1e1208"
+        secondary: "#8b2020"
+        tertiary: "#9b7020"
+        highlight: "rgba(139, 32, 32, 0.1)"
         textHighlight: "#f5e64288"
       darkMode:
-        light: "#1a1210"
-        lightgray: "#2d2018"
-        gray: "#6b5c4e"
-        darkgray: "#c9b89e"
-        dark: "#f0e6d3"
-        secondary: "#c4a265"
-        tertiary: "#7a9c8a"
-        highlight: "rgba(196, 162, 101, 0.15)"
-        textHighlight: "#c4a26588"
+        light: "#1a1008"
+        lightgray: "#2a1c0c"
+        gray: "#5a4532"
+        darkgray: "#c8a878"
+        dark: "#f0e0c0"
+        secondary: "#c04040"
+        tertiary: "#c09040"
+        highlight: "rgba(192, 64, 64, 0.15)"
+        textHighlight: "#c0904088"
 plugins:
   - source: github:quartz-community/created-modified-date
     enabled: true
