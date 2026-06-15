@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Map of Korlornium — Erodas Atlas</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0e0b06;
+      font-family: 'Cinzel', serif;
+      overflow: hidden;
+      height: 100dvh;
+    }
+
+    #map {
+      width: 100vw;
+      height: 100dvh;
+      background: #0e0b06;
+    }
+
+    /* ── Leaflet overrides ── */
+    .leaflet-container { background: #0e0b06; }
+
+    .leaflet-control-zoom a {
+      background: #1e160a !important;
+      color: #c8a060 !important;
+      border-color: #5a3e1a !important;
+      font-family: 'Cinzel', serif !important;
+    }
+    .leaflet-control-zoom a:hover {
+      background: #2e2010 !important;
+      color: #e8c080 !important;
+    }
+
+    /* ── Custom marker ── */
+    .map-pin {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+    .map-pin:hover { transform: scale(1.2); }
+    .map-pin:hover .pin-label { opacity: 1; }
+
+    .pin-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #c04040;
+      border: 2px solid #e8c080;
+      box-shadow: 0 0 6px rgba(200,80,40,0.7), 0 0 12px rgba(200,80,40,0.3);
+    }
+    .pin-stem {
+      width: 2px;
+      height: 8px;
+      background: #e8c080;
+      opacity: 0.8;
+    }
+    .pin-label {
+      margin-top: 3px;
+      background: rgba(14, 11, 6, 0.82);
+      border: 1px solid #5a3e1a;
+      color: #e8c080;
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      padding: 2px 6px;
+      white-space: nowrap;
+      border-radius: 2px;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      pointer-events: none;
+    }
+
+    /* ── UI overlays ── */
+    #title-card {
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      text-align: center;
+      pointer-events: none;
+    }
+    #title-card h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(14px, 2.5vw, 22px);
+      font-weight: 700;
+      color: #e8c080;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      text-shadow: 0 0 20px rgba(200,150,60,0.5), 1px 1px 3px rgba(0,0,0,0.9);
+    }
+    #title-card .subtitle {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(11px, 1.5vw, 14px);
+      color: #a07840;
+      letter-spacing: 0.12em;
+      margin-top: 2px;
+      font-style: italic;
+    }
+    #title-card .ornament {
+      color: #5a3e1a;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    #back-link {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      background: rgba(14, 11, 6, 0.82);
+      border: 1px solid #5a3e1a;
+      color: #c8a060;
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      padding: 7px 14px;
+      border-radius: 2px;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    #back-link:hover {
+      background: rgba(30, 22, 10, 0.95);
+      color: #e8c080;
+      border-color: #9b7020;
+    }
+    #back-link::before { content: '← '; }
+
+    #compass {
+      position: absolute;
+      bottom: 28px;
+      right: 20px;
+      z-index: 1000;
+      width: 64px;
+      height: 64px;
+      opacity: 0.65;
+      pointer-events: none;
+    }
+
+    /* ── Vignette ── */
+    #vignette {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.7) 100%);
+    }
+
+    /* ── Location popup ── */
+    .loc-popup {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      color: #e8c080;
+      background: rgba(14, 11, 6, 0.95);
+      border: 1px solid #5a3e1a;
+      padding: 8px 14px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .loc-popup a {
+      color: #e8c080;
+      text-decoration: none;
+      letter-spacing: 0.08em;
+    }
+    .loc-popup a:hover { color: #fff; }
+    .loc-popup .pop-sub {
+      font-family: 'EB Garamond', serif;
+      font-size: 11px;
+      color: #a07840;
+      margin-top: 2px;
+      font-style: italic;
+    }
+    .leaflet-popup-content-wrapper {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      border-radius: 2px !important;
+      padding: 0 !important;
+    }
+    .leaflet-popup-content { margin: 0 !important; }
+    .leaflet-popup-tip-container { display: none; }
+    .leaflet-popup-close-button { color: #a07840 !important; top: 4px !important; right: 6px !important; font-size: 16px !important; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div id="vignette"></div>
+
+  <div id="title-card">
+    <div class="ornament">✦</div>
+    <h1>Korlornium</h1>
+    <div class="subtitle">A Continent of Erodas</div>
+  </div>
+
+  <a id="back-link" href="/erodas-atlas/">Encyclopedia</a>
+
+  <!-- Compass Rose SVG -->
+  <svg id="compass" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="48" fill="none" stroke="#9b7020" stroke-width="1.5"/>
+    <circle cx="50" cy="50" r="40" fill="none" stroke="#5a3e1a" stroke-width="0.8"/>
+    <!-- Cardinal points -->
+    <polygon points="50,4 54,44 50,52 46,44" fill="#e8c080"/>
+    <polygon points="50,96 54,56 50,48 46,56" fill="#5a3e1a"/>
+    <polygon points="4,50 44,46 52,50 44,54" fill="#5a3e1a"/>
+    <polygon points="96,50 56,46 48,50 56,54" fill="#5a3e1a"/>
+    <!-- Center -->
+    <circle cx="50" cy="50" r="5" fill="#9b7020"/>
+    <circle cx="50" cy="50" r="2.5" fill="#e8c080"/>
+    <!-- Labels -->
+    <text x="50" y="16" font-family="Cinzel,serif" font-size="10" font-weight="700" fill="#e8c080" text-anchor="middle">N</text>
+    <text x="50" y="92" font-family="Cinzel,serif" font-size="8" fill="#7a5a2a" text-anchor="middle">S</text>
+    <text x="10"  y="54" font-family="Cinzel,serif" font-size="8" fill="#7a5a2a" text-anchor="middle">W</text>
+    <text x="90"  y="54" font-family="Cinzel,serif" font-size="8" fill="#7a5a2a" text-anchor="middle">E</text>
+  </svg>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const IMG_W = 3840;
+    const IMG_H = 2160;
+    const BASE_PATH = '/erodas-atlas';
+
+    // Markers straight from Obsidian zoom-map (fractional x/y, 0–1)
+    const MARKERS = [
+      { name: "Heaven's Hole",    x: 0.2291, y: 0.6244 },
+      { name: "Duskwind Landing", x: 0.3568, y: 0.6253 },
+      { name: "Stormveil",        x: 0.2450, y: 0.6827 },
+      { name: "Saugeo",           x: 0.1666, y: 0.5205 },
+      { name: "Dithoria City",    x: 0.5089, y: 0.3136 },
+      { name: "Frostcrag Glade",  x: 0.2191, y: 0.2340 },
+      { name: "Thalmyre",         x: 0.5512, y: 0.5535 },
+      { name: "The Scar",         x: 0.6590, y: 0.4123 },
+      { name: "Scalecrest Bluffs",x: 0.2125, y: 0.5588 },
+    ];
+
+    // Leaflet CRS.Simple: y increases downward in image, but lat increases upward
+    // So lat = -(y_fraction * IMG_H), lng = x_fraction * IMG_W
+    const map = L.map('map', {
+      crs: L.CRS.Simple,
+      minZoom: -2,
+      maxZoom: 3,
+      zoomSnap: 0.25,
+      zoomControl: true,
+    });
+
+    const bounds = [[0, 0], [-IMG_H, IMG_W]];
+    L.imageOverlay(`${BASE_PATH}/static/map/Korlornium.png`, bounds).addTo(map);
+    map.fitBounds(bounds, { padding: [20, 20] });
+
+    // Build a slug lookup from the Quartz content index
+    fetch(`${BASE_PATH}/static/contentIndex.json`)
+      .then(r => r.json())
+      .then(index => {
+        // index keys are slugs; values have { title, ... }
+        // Build reverse map: normalised title → slug
+        const titleToSlug = {};
+        Object.entries(index).forEach(([slug, data]) => {
+          if (data.title) {
+            titleToSlug[data.title.toLowerCase()] = slug;
+          }
+        });
+
+        MARKERS.forEach(m => {
+          const lat = -(m.y * IMG_H);
+          const lng =  m.x * IMG_W;
+
+          const icon = L.divIcon({
+            className: '',
+            html: `<div class="map-pin">
+                     <div class="pin-dot"></div>
+                     <div class="pin-stem"></div>
+                     <div class="pin-label">${m.name}</div>
+                   </div>`,
+            iconSize:   [60, 40],
+            iconAnchor: [30, 18],
+          });
+
+          const slug = titleToSlug[m.name.toLowerCase()];
+          const href = slug ? `${BASE_PATH}/${slug}` : null;
+
+          const popupHtml = `
+            <div class="loc-popup">
+              ${href
+                ? `<a href="${href}">${m.name}</a>`
+                : `<span>${m.name}</span>`}
+              <div class="pop-sub">${href ? 'View in atlas →' : 'Not yet in atlas'}</div>
+            </div>`;
+
+          L.marker([lat, lng], { icon })
+            .addTo(map)
+            .bindPopup(popupHtml, { maxWidth: 220 });
+        });
+      })
+      .catch(() => {
+        // Fallback: add markers without links
+        MARKERS.forEach(m => {
+          const lat = -(m.y * IMG_H);
+          const lng =  m.x * IMG_W;
+          const icon = L.divIcon({
+            className: '',
+            html: `<div class="map-pin"><div class="pin-dot"></div><div class="pin-stem"></div><div class="pin-label">${m.name}</div></div>`,
+            iconSize: [60, 40], iconAnchor: [30, 18],
+          });
+          L.marker([lat, lng], { icon }).addTo(map).bindPopup(`<div class="loc-popup">${m.name}</div>`);
+        });
+      });
+  </script>
+</body>
+</html>

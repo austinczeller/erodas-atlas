@@ -7,7 +7,6 @@ on:
     # Rebuild every 6 hours to pick up vault changes
     - cron: "0 */6 * * *"
   workflow_dispatch:
-    # Also available as a manual "Run workflow" button in GitHub Actions
 
 permissions:
   contents: read
@@ -24,8 +23,6 @@ jobs:
     steps:
       - name: Checkout erodas-atlas
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Clone Korlornium vault
         run: git clone --depth 1 https://github.com/austinczeller/Korlornium.git vault
@@ -38,53 +35,33 @@ jobs:
       - name: Install Python deps
         run: pip install pyyaml
 
-      - name: Sync vault content to content/
-        run: python scripts/sync-vault.py --vault vault --output content
+      - name: Sync vault content to src/content/docs
+        run: python scripts/sync-vault.py --vault vault --output src/content/docs --image-output public/vault-images --base-url /erodas-atlas
 
       - name: Copy map image into static dir
-        run: cp vault/z_Assests/Images/Korlornium.png quartz/static/map/Korlornium.png
+        run: cp vault/z_Assests/Images/Korlornium.png public/static/map/Korlornium.png
 
       - name: Copy Calendarium data to static
         run: |
-          mkdir -p quartz/static/calendar
-          cp vault/.obsidian/plugins/calendarium/data.json quartz/static/calendar/calendarium.json
+          mkdir -p public/static/calendar
+          cp vault/.obsidian/plugins/calendarium/data.json public/static/calendar/calendarium.json
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 22
           cache: npm
 
-      - name: Cache Quartz plugins
-        uses: actions/cache@v4
-        with:
-          path: .quartz/plugins
-          key: ${{ runner.os }}-plugins-${{ hashFiles('quartz.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-plugins-
-
       - name: Install npm dependencies
-        run: npm ci
-
-      - name: Install Quartz community plugins
-        run: npx quartz plugin install
+        run: npm install
 
       - name: Build site
-        run: npx quartz build
-
-      - name: Copy content images to public
-        run: |
-          find content -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.svg" -o -name "*.webp" -o -name "*.avif" \) | while IFS= read -r f; do
-            rel="${f#content/}"
-            destdir="public/$(dirname "$rel")"
-            mkdir -p "$destdir"
-            cp "$f" "$destdir/"
-          done
+        run: npm run build
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: public
+          path: dist
 
   deploy:
     needs: build

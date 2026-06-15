@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Erodian Calendar — Erodas Atlas</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0e0b06;
+      color: #c8a060;
+      font-family: 'EB Garamond', serif;
+      min-height: 100dvh;
+      padding: 0 0 3rem;
+    }
+
+    #back-link {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 100;
+      background: rgba(14, 11, 6, 0.85);
+      border: 1px solid #5a3e1a;
+      color: #c8a060;
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      padding: 7px 14px;
+      border-radius: 2px;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    #back-link:hover {
+      background: rgba(30, 22, 10, 0.95);
+      color: #e8c080;
+      border-color: #9b7020;
+    }
+    #back-link::before { content: '\2190 '; }
+
+    #container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 2rem;
+    }
+
+    /* ── Page title ── */
+    #page-title {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    #page-title h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(18px, 3vw, 28px);
+      font-weight: 700;
+      color: #e8c080;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-shadow: 0 0 20px rgba(200,150,60,0.4), 1px 1px 3px rgba(0,0,0,0.9);
+    }
+    #page-title .ornament { color: #5a3e1a; font-size: 1.1em; margin-bottom: 0.3em; }
+    #page-title .subtitle {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 0.95em;
+      color: #a07840;
+      margin-top: 0.4em;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Current date banner ── */
+    #current-date-banner {
+      background: rgba(139, 32, 32, 0.12);
+      border: 1px solid rgba(139, 32, 32, 0.35);
+      border-radius: 2px;
+      text-align: center;
+      padding: 0.7em 1.2em;
+      margin-bottom: 2rem;
+      font-family: 'EB Garamond', serif;
+    }
+    #current-date-banner .label {
+      font-size: 0.78em;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #8b5a2a;
+      font-family: 'Cinzel', serif;
+    }
+    #current-date-banner .date {
+      font-size: 1.15em;
+      color: #e8c080;
+      margin-top: 0.15em;
+    }
+
+    /* ── Month navigation ── */
+    #nav-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.4rem;
+      gap: 1rem;
+    }
+    .nav-btn {
+      background: rgba(14, 11, 6, 0.6);
+      border: 1px solid #5a3e1a;
+      color: #c8a060;
+      font-family: 'Cinzel', serif;
+      font-size: 1.1em;
+      width: 36px;
+      height: 36px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      flex-shrink: 0;
+    }
+    .nav-btn:hover {
+      background: rgba(139, 32, 32, 0.2);
+      color: #e8c080;
+      border-color: #9b7020;
+    }
+    #month-label {
+      text-align: center;
+      flex: 1;
+    }
+    #month-label .month-name {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(15px, 2.5vw, 22px);
+      font-weight: 700;
+      color: #e8c080;
+      letter-spacing: 0.12em;
+    }
+    #month-label .month-sub {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      color: #a07840;
+      font-size: 0.9em;
+      margin-top: 0.1em;
+    }
+
+    /* ── Moon display ── */
+    #moon-row {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .moon-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4em;
+    }
+    .moon-label {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: #7a5a30;
+      text-transform: uppercase;
+    }
+    .moon-phase-label {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 0.82em;
+      color: #9b7020;
+    }
+
+    /* ── Calendar grid ── */
+    #grid-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    #cal-grid {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+    #cal-grid th {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(8px, 1.1vw, 11px);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: #8b5a2a;
+      text-transform: uppercase;
+      padding: 0.5em 0.3em;
+      border-bottom: 1px solid rgba(90, 62, 26, 0.5);
+      text-align: center;
+    }
+    #cal-grid td {
+      text-align: center;
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(13px, 1.6vw, 16px);
+      color: #a07840;
+      padding: 0.5em 0.25em;
+      border: 1px solid rgba(90, 62, 26, 0.2);
+      cursor: default;
+      transition: background 0.1s;
+      position: relative;
+    }
+    #cal-grid td:hover {
+      background: rgba(90, 62, 26, 0.15);
+      color: #c8a060;
+    }
+    #cal-grid td.today {
+      background: rgba(139, 32, 32, 0.22);
+      border-color: rgba(139, 32, 32, 0.5);
+      color: #e8c080;
+      font-weight: 600;
+    }
+    #cal-grid td.today::after {
+      content: '';
+      position: absolute;
+      bottom: 3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 4px;
+      background: #c04040;
+      border-radius: 50%;
+    }
+
+    /* ── Season band ── */
+    .season-band {
+      height: 3px;
+      border-radius: 1px;
+      margin-bottom: 0.5rem;
+      opacity: 0.6;
+    }
+
+    /* ── Month pills ── */
+    #month-pills {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1.8rem;
+      flex-wrap: wrap;
+    }
+    .month-pill {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #7a5a30;
+      border: 1px solid rgba(90, 62, 26, 0.4);
+      padding: 4px 10px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .month-pill:hover {
+      color: #c8a060;
+      border-color: #9b7020;
+      background: rgba(90, 62, 26, 0.15);
+    }
+    .month-pill.active {
+      color: #e8c080;
+      border-color: #8b2020;
+      background: rgba(139, 32, 32, 0.15);
+    }
+
+    /* ── Divider ── */
+    .ornament-hr {
+      border: none;
+      border-top: 1px solid rgba(90, 62, 26, 0.3);
+      margin: 1.8rem 0;
+      position: relative;
+    }
+    .ornament-hr::before {
+      content: '\2756';
+      position: absolute;
+      top: -0.65em;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0e0b06;
+      padding: 0 0.6em;
+      color: #5a3e1a;
+      font-size: 0.9em;
+    }
+
+    /* ── Year jump ── */
+    #year-jump {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      font-family: 'EB Garamond', serif;
+      font-size: 0.9em;
+      color: #7a5a30;
+    }
+    #year-input {
+      background: rgba(14, 11, 6, 0.8);
+      border: 1px solid #5a3e1a;
+      color: #c8a060;
+      font-family: 'EB Garamond', serif;
+      font-size: 1em;
+      padding: 3px 8px;
+      width: 80px;
+      text-align: center;
+      border-radius: 2px;
+    }
+    #year-input:focus {
+      outline: none;
+      border-color: #9b7020;
+    }
+    #year-go {
+      background: rgba(14, 11, 6, 0.6);
+      border: 1px solid #5a3e1a;
+      color: #c8a060;
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    #year-go:hover {
+      border-color: #9b7020;
+      color: #e8c080;
+    }
+
+    /* ── Loading / error ── */
+    #loading {
+      text-align: center;
+      padding: 4rem 1rem;
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      color: #5a3e1a;
+    }
+  </style>
+</head>
+<body>
+  <a id="back-link" href="/erodas-atlas/">Encyclopedia</a>
+
+  <div id="container">
+    <div id="page-title">
+      <div class="ornament">✦</div>
+      <h1>Erodian Calendar</h1>
+      <div class="subtitle">The Standard Calendar of the Age</div>
+    </div>
+
+    <div id="loading">Consulting the annals&hellip;</div>
+  </div>
+
+  <script>
+    const BASE_PATH = '/erodas-atlas';
+
+    fetch(`${BASE_PATH}/static/calendar/calendarium.json`)
+      .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(buildCalendar)
+      .catch(e => {
+        document.getElementById('loading').textContent = 'Calendar data could not be loaded.';
+      });
+
+    function buildCalendar(data) {
+      const cal = data.calendars[0];
+      const weekdays = cal.static.weekdays;
+      const months   = cal.static.months;
+      const moons    = cal.static.moons;
+      const seasons  = cal.seasonal.seasons;
+      const TODAY    = cal.current; // { day, month, year }
+
+      const DAYS_PER_WEEK  = weekdays.length;   // 10
+      const DAYS_PER_MONTH = months[0].length;  // 80 (all equal)
+      const DAYS_PER_YEAR  = months.reduce((s, m) => s + m.length, 0); // 320
+
+      let viewMonth = TODAY.month;
+      let viewYear  = TODAY.year;
+
+      /* ── Moon phase helpers ── */
+      function absDay(year, month, day) {
+        return year * DAYS_PER_YEAR + month * DAYS_PER_MONTH + (day - 1);
+      }
+
+      function moonPhaseFraction(moon, year, month, day) {
+        const d = absDay(year, month, day);
+        return (((d + (moon.offset || 0)) % moon.cycle) + moon.cycle) % moon.cycle / moon.cycle;
+      }
+
+      function phaseName(f) {
+        if (f < 0.06 || f > 0.94) return 'New Moon';
+        if (f < 0.19) return 'Waxing Crescent';
+        if (f < 0.31) return 'First Quarter';
+        if (f < 0.44) return 'Waxing Gibbous';
+        if (f < 0.56) return 'Full Moon';
+        if (f < 0.69) return 'Waning Gibbous';
+        if (f < 0.81) return 'Last Quarter';
+        return 'Waning Crescent';
+      }
+
+      function moonSVG(f, faceColor, shadowColor) {
+        const r = 16, pad = 2;
+        const sz = (r + pad) * 2;
+        const cx = r + pad, cy = r + pad;
+
+        if (f < 0.02 || f > 0.98) {
+          return `<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}"><circle cx="${cx}" cy="${cy}" r="${r}" fill="${shadowColor}" stroke="rgba(90,62,26,0.4)" stroke-width="1"/></svg>`;
+        }
+        if (f > 0.48 && f < 0.52) {
+          return `<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}"><circle cx="${cx}" cy="${cy}" r="${r}" fill="${faceColor}"/></svg>`;
+        }
+
+        const isWaxing = f < 0.5;
+        const ex = Math.abs(Math.cos(f * 2 * Math.PI)) * r;
+        const tx = cx, ty = cy - r;
+        const bx = cx, by = cy + r;
+
+        let path;
+        if (isWaxing) {
+          const ts = f < 0.25 ? 0 : 1;
+          path = `M ${tx} ${ty} A ${r} ${r} 0 1 1 ${bx} ${by} A ${ex.toFixed(2)} ${r} 0 0 ${ts} ${tx} ${ty} Z`;
+        } else {
+          const ts = f < 0.75 ? 1 : 0;
+          path = `M ${tx} ${ty} A ${r} ${r} 0 1 0 ${bx} ${by} A ${ex.toFixed(2)} ${r} 0 0 ${ts} ${tx} ${ty} Z`;
+        }
+
+        return `<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}">
+          <circle cx="${cx}" cy="${cy}" r="${r}" fill="${shadowColor}" stroke="rgba(90,62,26,0.4)" stroke-width="1"/>
+          <path d="${path}" fill="${faceColor}"/>
+        </svg>`;
+      }
+
+      /* ── Season for a given month ── */
+      function getSeason(monthIdx) {
+        return seasons.find(s => s.month === monthIdx);
+      }
+
+      /* ── Weekday abbreviations (first word, up to 3 chars) ── */
+      function abbr(wdName) {
+        return wdName.split(' ')[0].slice(0, 3);
+      }
+
+      /* ── Render ── */
+      function render() {
+        const month   = months[viewMonth];
+        const season  = getSeason(viewMonth);
+        const weeksCount = DAYS_PER_MONTH / DAYS_PER_WEEK;
+
+        // Moon phases at day 1 of viewed month
+        const moonData = moons.map(moon => {
+          const f = moonPhaseFraction(moon, viewYear, viewMonth, 1);
+          return { moon, f, svg: moonSVG(f, moon.faceColor, moon.shadowColor), label: phaseName(f) };
+        });
+
+        // Weekday header
+        const thCells = weekdays.map(w =>
+          `<th title="${w.name}">${abbr(w.name)}</th>`
+        ).join('');
+
+        // Day cells
+        let rows = '';
+        for (let week = 0; week < weeksCount; week++) {
+          let cells = '';
+          for (let dow = 0; dow < DAYS_PER_WEEK; dow++) {
+            const d = week * DAYS_PER_WEEK + dow + 1;
+            const isToday = d === TODAY.day && viewMonth === TODAY.month && viewYear === TODAY.year;
+            cells += `<td class="${isToday ? 'today' : ''}">${d}</td>`;
+          }
+          rows += `<tr>${cells}</tr>`;
+        }
+
+        // Season decorative band color
+        const seasonColor = season ? season.color : '#5a3e1a';
+
+        // Month pills
+        const pills = months.map((m, i) => {
+          const pillSeason = getSeason(i);
+          const pColor = pillSeason ? pillSeason.color : '#5a3e1a';
+          return `<span class="month-pill ${i === viewMonth ? 'active' : ''}"
+            style="${i === viewMonth ? `border-color:${pColor};background:${pColor}22` : ''}"
+            onclick="navigate(${viewYear},${i})">${m.name.split(' ')[0]}</span>`;
+        }).join('');
+
+        // Prev / next
+        const prevM = viewMonth === 0 ? months.length - 1 : viewMonth - 1;
+        const prevY = viewMonth === 0 ? viewYear - 1 : viewYear;
+        const nextM = viewMonth === months.length - 1 ? 0 : viewMonth + 1;
+        const nextY = viewMonth === months.length - 1 ? viewYear + 1 : viewYear;
+
+        const todayMonthName = months[TODAY.month].name;
+
+        document.getElementById('container').innerHTML = `
+          <div id="page-title">
+            <div class="ornament">❖</div>
+            <h1>Erodian Calendar</h1>
+            <div class="subtitle">${cal.name}</div>
+          </div>
+
+          <div id="current-date-banner">
+            <div class="label">Current Date</div>
+            <div class="date">Day&nbsp;${TODAY.day}&nbsp;&mdash;&nbsp;${todayMonthName}&nbsp;&mdash;&nbsp;Year&nbsp;${TODAY.year}</div>
+          </div>
+
+          <div id="moon-row">
+            ${moonData.map(m => `
+              <div class="moon-item">
+                ${m.svg}
+                <div class="moon-label">${m.moon.name}</div>
+                <div class="moon-phase-label">${m.label}</div>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="ornament-hr"></div>
+
+          <div id="nav-row">
+            <button class="nav-btn" onclick="navigate(${prevY},${prevM})">&#8592;</button>
+            <div id="month-label">
+              <div class="month-name">${month.name}</div>
+              <div class="month-sub">${season ? season.name : ''} &middot; Year ${viewYear}</div>
+            </div>
+            <button class="nav-btn" onclick="navigate(${nextY},${nextM})">&#8594;</button>
+          </div>
+
+          <div class="season-band" style="background:${seasonColor}"></div>
+
+          <div id="grid-wrap">
+            <table id="cal-grid">
+              <thead><tr>${thCells}</tr></thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>
+
+          <div id="month-pills">${pills}</div>
+
+          <div id="year-jump">
+            <label for="year-input" style="font-style:italic">Jump to year:</label>
+            <input id="year-input" type="number" value="${viewYear}" min="0" />
+            <button id="year-go" onclick="jumpYear()">Go</button>
+          </div>
+        `;
+
+        // Scroll today into view if it's in the grid
+        const todayCell = document.querySelector('td.today');
+        if (todayCell) todayCell.scrollIntoView({ block: 'nearest' });
+      }
+
+      window.navigate = function(y, m) {
+        viewYear  = parseInt(y, 10);
+        viewMonth = parseInt(m, 10);
+        render();
+      };
+
+      window.jumpYear = function() {
+        const val = parseInt(document.getElementById('year-input').value, 10);
+        if (!isNaN(val)) { viewYear = val; render(); }
+      };
+
+      render();
+    }
+  </script>
+</body>
+</html>

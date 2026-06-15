@@ -1,0 +1,51 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+function computeSlug(id: string): string {
+  let parts = id.replace(/\\/g, '/').split('/');
+  parts[parts.length - 1] = parts[parts.length - 1].replace(/\.md$/, '');
+  parts = parts.map((p) =>
+    p.toLowerCase().replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '')
+  );
+  if (parts.length >= 2 && parts[parts.length - 1] === parts[parts.length - 2]) {
+    parts.pop();
+  }
+  return parts.join('/');
+}
+
+export async function getStaticPaths() {
+  const docs = await getCollection('docs');
+  const seen = new Map<string, CollectionEntry<'docs'>>();
+
+  for (const entry of docs) {
+    const slug = computeSlug(entry.id);
+    if (!seen.has(slug)) {
+      seen.set(slug, entry);
+    }
+  }
+
+  return Array.from(seen.entries()).map(([slug, entry]) => ({
+    params: { slug },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'docs'>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const title = entry.data.title ?? entry.id.split('/').pop()?.replace(/\.md$/, '') ?? '';
+---
+
+<BaseLayout title={title} description={entry.data.description}>
+  <article class="enc-article">
+    <h1 class="enc-article-title">{title}</h1>
+    <div class="enc-article-body">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

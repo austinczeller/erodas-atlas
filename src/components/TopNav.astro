@@ -1,0 +1,120 @@
+---
+interface Props {
+  base: string;
+  currentPath: string;
+}
+
+const { base, currentPath } = Astro.props;
+
+function isActive(href: string): boolean {
+  const norm = href.replace(/\/$/, '');
+  const cur = currentPath.replace(/\/$/, '');
+  if (norm === base || norm === '') {
+    return cur === base || cur === base + '/';
+  }
+  return cur === norm || cur.startsWith(norm + '/');
+}
+---
+
+<nav id="enc-topnav">
+  <div class="enc-nav-inner">
+    <a href={`${base}/`} class:list={['enc-nav-brand', { active: isActive(base + '/') }]}>
+      Erodian Encyclopedia
+    </a>
+    <div class="enc-nav-sep"></div>
+
+    <ul class="enc-nav-list" id="enc-nav-list">
+
+      <li class="enc-has-dd">
+        <button class="enc-nav-btn" aria-haspopup="true">
+          Continents <span class="enc-nav-arrow">&#9660;</span>
+        </button>
+        <ul class="enc-nav-dd">
+          <li><a href={`${base}/world-(erodas)/korlornium`} class:list={[{ active: isActive(`${base}/world-(erodas)/korlornium`) }]}>Korlornium</a></li>
+          <li><a href={`${base}/world-(erodas)/dracofold`} class:list={[{ active: isActive(`${base}/world-(erodas)/dracofold`) }]}>Dracofold</a></li>
+          <li><a href={`${base}/world-(erodas)/goghdor`} class:list={[{ active: isActive(`${base}/world-(erodas)/goghdor`) }]}>Goghdor</a></li>
+          <li><a href={`${base}/world-(erodas)/seivara`} class:list={[{ active: isActive(`${base}/world-(erodas)/seivara`) }]}>Seivara</a></li>
+        </ul>
+      </li>
+
+      <li class="enc-has-dd">
+        <button class="enc-nav-btn" aria-haspopup="true">
+          Lore <span class="enc-nav-arrow">&#9660;</span>
+        </button>
+        <ul class="enc-nav-dd">
+          <li><a href={`${base}/gods-and-higher-powers`} class:list={[{ active: isActive(`${base}/gods-and-higher-powers`) }]}>Gods &amp; Higher Powers</a></li>
+          <li><a href={`${base}/factions`} class:list={[{ active: isActive(`${base}/factions`) }]}>Factions</a></li>
+          <li><a href={`${base}/species`} class:list={[{ active: isActive(`${base}/species`) }]}>Species</a></li>
+        </ul>
+      </li>
+
+      <li class="enc-has-dd">
+        <button class="enc-nav-btn" aria-haspopup="true">
+          History <span class="enc-nav-arrow">&#9660;</span>
+        </button>
+        <ul class="enc-nav-dd">
+          <li><a href={`${base}/history`} class:list={[{ active: isActive(`${base}/history`) }]}>Timelines &amp; Events</a></li>
+          <li><a href={`${base}/planes`} class:list={[{ active: isActive(`${base}/planes`) }]}>Planes</a></li>
+          <li><a href={`${base}/celestial-bodies`} class:list={[{ active: isActive(`${base}/celestial-bodies`) }]}>Celestial Bodies</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href={`${base}/static/map/`} class="enc-nav-link">Map</a>
+      </li>
+      <li>
+        <a href={`${base}/static/calendar/`} class="enc-nav-link">Calendar</a>
+      </li>
+      <li>
+        <a href={`${base}/static/vote/`} class="enc-nav-link">Vote</a>
+      </li>
+
+    </ul>
+
+    <button class="enc-nav-btn enc-music-btn" id="enc-music-btn" title="Toggle ambient music">&#9834;</button>
+
+    <button class="enc-nav-ham" id="enc-nav-ham" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<script>
+  const MUSIC_SRC = 'https://www.youtube.com/embed/HL8oQw0nm0M?autoplay=1&loop=1&playlist=HL8oQw0nm0M';
+  let musicIframe: HTMLIFrameElement | null = null;
+  let musicPlaying = false;
+
+  const musicBtn = document.getElementById('enc-music-btn') as HTMLButtonElement | null;
+  musicBtn?.addEventListener('click', () => {
+    if (musicPlaying) {
+      musicIframe?.remove();
+      musicIframe = null;
+      musicPlaying = false;
+      if (musicBtn) { musicBtn.innerHTML = '&#9834;'; musicBtn.classList.remove('playing'); }
+    } else {
+      musicIframe = document.createElement('iframe');
+      musicIframe.src = MUSIC_SRC;
+      musicIframe.allow = 'autoplay; encrypted-media';
+      musicIframe.setAttribute('allowfullscreen', '');
+      musicIframe.style.cssText = 'position:fixed;bottom:0;right:0;width:1px;height:1px;border:0;opacity:0.01;pointer-events:none;z-index:-1;';
+      document.body.appendChild(musicIframe);
+      musicPlaying = true;
+      if (musicBtn) { musicBtn.innerHTML = '&#9835;'; musicBtn.classList.add('playing'); }
+    }
+  });
+
+  const ham = document.getElementById('enc-nav-ham');
+  const list = document.getElementById('enc-nav-list');
+  ham?.addEventListener('click', () => {
+    ham.classList.toggle('open');
+    list?.classList.toggle('open');
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('.enc-has-dd .enc-nav-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (window.innerWidth <= 768) {
+        btn.closest('li')?.classList.toggle('dd-open');
+      }
+    });
+  });
+</script>

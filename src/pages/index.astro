@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<BaseLayout title="Erodian Encyclopedia" description="The collected knowledge of the Erodian Atlasing Society — continents, gods, factions, history, and more.">
+
+  <div class="enc-homepage">
+
+    <div class="enc-preface">
+      <em>Compiled and maintained by the <strong>Erodian Atlasing Society</strong></em>
+      <blockquote>
+        My associates and I have been compiling histories of this ancient land for as long as the Fowlmen have walked Siroth.
+        Korlornium is quite a fascinating continent full of geopolitical conflict, natural wonders, and debauchery.
+        Due to the instability over the past 2000 years, information is difficult to come by for this region.
+        Thereby you may notice gaps in our manuscripts — but be advised we will update this text as new information
+        and historical accounts come to light. We hope you enjoy reading the collected text and may immerse yourself
+        in the rich and mysterious land which many of the authors of this text call home.
+      </blockquote>
+    </div>
+
+    <div class="enc-nav-cards">
+      <a href={`${base}/static/map/`} class="map-card">
+        <div class="map-card-title">&#10022; Map of Korlornium &#10022;</div>
+        <div class="map-card-sub">An interactive atlas — zoom, explore, and click any location</div>
+      </a>
+      <a href={`${base}/static/calendar/`} class="map-card">
+        <div class="map-card-title">&#10022; Erodian Calendar &#10022;</div>
+        <div class="map-card-sub">Track the in-world date, moons, and seasons of Erodas</div>
+      </a>
+      <a href={`${base}/static/vote/`} class="map-card map-card--vote">
+        <div class="map-card-title">&#10022; Vote: Next Adventure &#10022;</div>
+        <div class="map-card-sub">Cast your voice — regions, vibes, and themes for the next campaign</div>
+      </a>
+    </div>
+
+    <hr />
+
+    <h2>The Known World of Erodas</h2>
+
+    <p>
+      <a href={`${base}/world-(erodas)/erodas`}>Erodas</a> is a living world — two moons overhead, four seasons,
+      and a history older than memory. Below are the continents currently charted by the Atlasing Society.
+      Some are well-documented; others remain at the edge of legend.
+    </p>
+
+    <div class="continent-grid">
+
+      <div class="continent-card">
+        <h3><a href={`${base}/world-(erodas)/korlornium`}>Korlornium</a></h3>
+        <em>A small, isolated continent — the heart of the campaign</em>
+        <p>
+          A land of theological strife, diverse ecology, and unique geological phenomena.
+          Divided by <a href={`${base}/world-(erodas)/korlornium/the-scar`}>The Scar</a>, the western forests of
+          <a href={`${base}/world-(erodas)/korlornium/caldrith`}>Caldrith</a> are home to wealthy cities and complex factions,
+          while the arid eastern expanse of <a href={`${base}/world-(erodas)/korlornium/siroth`}>Siroth</a> is harsh,
+          conservative, and deep with history. Two thousand years since the Great Wave, the scars of catastrophe still shape its people.
+        </p>
+      </div>
+
+      <div class="continent-card">
+        <h3><a href={`${base}/world-(erodas)/dracofold`}>Dracofold</a></h3>
+        <em>Volcanic continent of draconic origin — ruled by the dragon queen</em>
+        <p>
+          The air above Dracofold smells of sulfur and hot stone. Tiamat's rule is absolute here — chromatic dragons
+          serve as her lieutenants, and humanoid populations survive under their shadow. Rogue dragons exiled from her
+          court have spread across Erodas, settling in remote regions and establishing their own smaller tyrannies.
+          At the continent's molten heart lies the <strong>Cradle of Scales</strong>, where all dragonkind is said to have been born.
+        </p>
+      </div>
+
+      <div class="continent-card">
+        <h3><a href={`${base}/world-(erodas)/goghdor`}>Goghdor</a></h3>
+        <em>A towering fjord — closer to the heavens than anywhere else on Erodas</em>
+        <p>
+          Known across Erodas as <strong>The Reach</strong>, Goghdor is not a continent in the traditional sense —
+          it is a single colossal rock rising from the ocean, its peaks so high that those who live at the summit exist
+          above the clouds. Home to the <strong>Star Touched</strong>, Aasimar of elven and dwarven blood whose culture
+          is built entirely around the celestial.
+        </p>
+      </div>
+
+      <div class="continent-card">
+        <h3><a href={`${base}/world-(erodas)/seivara`}>Seivara</a></h3>
+        <em>Ancient jungle continent — more legend than fact to most of Korlornium</em>
+        <p>
+          Sailors who have seen its coastline describe a wall of green so dense the sea appears to simply end at a forest.
+          Seivara has no kings, no churches, and no organized religion. Authority here belongs to the <strong>Ara</strong> —
+          ancient nature spirits that inhabit every river, grove, and tidal pool.
+        </p>
+      </div>
+
+    </div>
+
+    <hr />
+
+    <h2>Explore the Encyclopedia</h2>
+
+    <h3>Peoples &amp; Powers</h3>
+    <ul>
+      <li><strong><a href={`${base}/factions`}>Factions</a></strong> — Guilds, gangs, dynasties, and secret societies</li>
+      <li><strong><a href={`${base}/gods-and-higher-powers`}>Gods and Higher Powers</a></strong> — The divine forces worshipped and feared across Erodas</li>
+      <li><strong><a href={`${base}/species`}>Species</a></strong> — The peoples and creatures who call Erodas home</li>
+    </ul>
+
+    <h3>The World Beyond</h3>
+    <ul>
+      <li><strong><a href={`${base}/history`}>History</a></strong> — Timelines, calendars, and the ages that shaped the present</li>
+      <li><strong><a href={`${base}/ecology`}>Ecology</a></strong> — Flora, fauna, and the natural phenomena of Erodas</li>
+      <li><strong><a href={`${base}/planes`}>Planes</a></strong> — The realms of existence beyond the material world</li>
+      <li><strong><a href={`${base}/celestial-bodies`}>Celestial Bodies</a></strong> — The moons and stars of Erodas</li>
+    </ul>
+
+  </div>
+
+</BaseLayout>

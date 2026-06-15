@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Next Adventure — Erodian Encyclopedia</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0e0b06;
+      color: #c8a060;
+      font-family: 'EB Garamond', serif;
+      min-height: 100dvh;
+      padding-bottom: 4rem;
+    }
+
+    #back-link {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 100;
+      background: rgba(14, 11, 6, 0.85);
+      border: 1px solid #5a3e1a;
+      color: #c8a060;
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      padding: 7px 14px;
+      border-radius: 2px;
+      transition: all 0.15s;
+    }
+    #back-link:hover { background: rgba(30,22,10,0.95); color: #e8c080; border-color: #9b7020; }
+    #back-link::before { content: '\2190 '; }
+
+    #container {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 4.5rem 1.5rem 2rem;
+    }
+
+    /* ── Page header ── */
+    .page-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .page-header .ornament { color: #5a3e1a; font-size: 1.2em; margin-bottom: 0.35em; }
+    .page-header h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(18px, 3vw, 26px);
+      font-weight: 700;
+      color: #e8c080;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-shadow: 0 0 20px rgba(200,150,60,0.35), 1px 1px 3px rgba(0,0,0,0.9);
+    }
+    .page-header .subtitle {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      color: #a07840;
+      font-size: 1.05em;
+      margin-top: 0.5em;
+    }
+
+    /* ── Divider ── */
+    .ornament-hr {
+      border: none;
+      border-top: 1px solid rgba(90,62,26,0.35);
+      margin: 2rem 0;
+      position: relative;
+    }
+    .ornament-hr::before {
+      content: '\2756';
+      position: absolute;
+      top: -0.65em;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0e0b06;
+      padding: 0 0.6em;
+      color: #5a3e1a;
+      font-size: 0.9em;
+    }
+
+    /* ── Intro text ── */
+    .intro {
+      font-size: 1.08em;
+      line-height: 1.7;
+      color: #a07840;
+      font-style: italic;
+      text-align: center;
+      margin-bottom: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ── Vote sections ── */
+    .vote-section {
+      margin-bottom: 2.5rem;
+    }
+    .vote-section h2 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(12px, 1.8vw, 15px);
+      font-weight: 700;
+      color: #c04040;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 0.3em;
+    }
+    .vote-section .section-desc {
+      font-style: italic;
+      color: #7a5a30;
+      font-size: 0.92em;
+      margin-bottom: 1.1em;
+    }
+
+    /* ── Option cards ── */
+    .options {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 0.65rem;
+    }
+    .option {
+      position: relative;
+    }
+    .option input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .option label {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(90,62,26,0.45);
+      border-radius: 2px;
+      padding: 0.8em 1em;
+      cursor: pointer;
+      transition: all 0.15s;
+      background: rgba(14,11,6,0.4);
+      min-height: 72px;
+    }
+    .option label:hover {
+      border-color: #9b7020;
+      background: rgba(90,62,26,0.15);
+    }
+    .option input:checked + label {
+      border-color: #c04040;
+      background: rgba(139,32,32,0.18);
+    }
+    .option-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.82em;
+      font-weight: 600;
+      color: #c8a060;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.25em;
+    }
+    .option input:checked + label .option-name { color: #e8c080; }
+    .option-desc {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 0.84em;
+      color: #7a5a30;
+      line-height: 1.4;
+    }
+    .option input:checked + label .option-desc { color: #a07840; }
+    .option-check {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border: 1px solid rgba(90,62,26,0.5);
+      border-radius: 2px;
+      margin-bottom: 0.4em;
+      transition: all 0.12s;
+      background: transparent;
+      flex-shrink: 0;
+    }
+    .option input:checked + label .option-check {
+      background: #c04040;
+      border-color: #c04040;
+      box-shadow: 0 0 6px rgba(192,64,64,0.4);
+    }
+
+    /* ── Submit / summary ── */
+    #submit-zone {
+      margin-top: 2.5rem;
+      text-align: center;
+    }
+    #tally-btn {
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #e8c080;
+      background: rgba(139,32,32,0.25);
+      border: 1px solid #8b2020;
+      padding: 12px 32px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    #tally-btn:hover {
+      background: rgba(139,32,32,0.4);
+      border-color: #c04040;
+    }
+
+    #summary {
+      display: none;
+      margin-top: 2rem;
+      border: 1px solid rgba(139,32,32,0.3);
+      border-radius: 2px;
+      padding: 1.4em 1.8em;
+      background: rgba(139,32,32,0.08);
+      text-align: left;
+    }
+    #summary h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #c04040;
+      margin-bottom: 1em;
+    }
+    .summary-section {
+      margin-bottom: 0.9em;
+    }
+    .summary-label {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #7a5a30;
+      margin-bottom: 0.3em;
+    }
+    .summary-picks {
+      font-family: 'EB Garamond', serif;
+      color: #c8a060;
+      font-size: 1em;
+      line-height: 1.6;
+    }
+    .summary-picks em { color: #a07840; }
+
+    #copy-btn {
+      margin-top: 1.2em;
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #c8a060;
+      background: transparent;
+      border: 1px solid rgba(90,62,26,0.5);
+      padding: 7px 18px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    #copy-btn:hover { border-color: #9b7020; color: #e8c080; }
+    #copy-confirm { font-family:'EB Garamond',serif; font-style:italic; color:#7a5a30; font-size:0.9em; margin-left:0.8em; opacity:0; transition:opacity 0.3s; }
+    #copy-confirm.show { opacity:1; }
+
+    /* ── Note about form ── */
+    .form-note {
+      margin-top: 2rem;
+      padding: 1em 1.4em;
+      border: 1px dashed rgba(90,62,26,0.35);
+      border-radius: 2px;
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 0.88em;
+      color: #6a4a22;
+      text-align: center;
+    }
+
+    /* ─── PASTE YOUR GOOGLE FORM BELOW ───────────
+       To collect votes from all players in one place:
+       1. Go to forms.google.com and create a form with these questions.
+       2. Click "Send" → Embed → copy the <iframe> code.
+       3. Replace the comment block below with that <iframe>.
+    ──────────────────────────────────────────── */
+    #form-embed {
+      margin-top: 2.5rem;
+    }
+  </style>
+</head>
+<body>
+  <a id="back-link" href="/erodas-atlas/">Encyclopedia</a>
+
+  <div id="container">
+    <div class="page-header">
+      <div class="ornament">❖</div>
+      <h1>The Next Adventure</h1>
+      <div class="subtitle">Cast your voice — the atlas awaits your direction</div>
+    </div>
+
+    <p class="intro">
+      The campaign has reached its end. New horizons stretch before the party — uncharted continents, ancient conflicts, and mysteries not yet named. Where should the story go next?
+      <br><br>
+      Select your preferences below. Your choices will help shape the next chapter of Erodas.
+    </p>
+
+    <div class="ornament-hr"></div>
+
+    <!-- ── SECTION 1: Region ── -->
+    <div class="vote-section" id="section-region">
+      <h2>I. Where should the next campaign be set?</h2>
+      <p class="section-desc">Choose one or more regions that interest you. The world is wide.</p>
+      <div class="options">
+        <div class="option">
+          <input type="checkbox" id="r-dracofold" name="region" value="Dracofold" />
+          <label for="r-dracofold">
+            <span class="option-check"></span>
+            <span class="option-name">Dracofold</span>
+            <span class="option-desc">Volcanic continent of dragons — Tiamat's domain and the Cradle of Scales</span>
+          </label>
+        </div>
+        <div class="option">
+          <input type="checkbox" id="r-goghdor" name="region" value="Goghdor (The Reach)" />
+          <label for="r-goghdor">
+            <span class="option-check"></span>
+            <span class="option-name">Goghdor — The Reach</span>
+            <span class="option-desc">A colossal mountain fjord above the clouds, home to the Star Touched</span>
+          </label>
+        </div>
+        <div class="option">
+          <input type="checkbox" id="r-seivara" name="region" value="Seivara" />
+          <label for="r-seivara">
+            <span class="option-check"></span>
+            <span class="option-name">Seivara</span>
+            <span class="option-desc">Ancient jungle continent of nature spirits, elves, and pixies — more legend than fact</span>
+          </label>
+        </div>
+        <div class="option">
+          <input type="checkbox" id="r-siroth" name="region" value="Siroth (Eastern Korlornium)" />
+          <label for="r-siroth">
+            <span class="option-check"></span>
+            <span class="option-name">Siroth</span>
+            <span class="option-desc">The arid eastern half of Korlornium — deserts, dust, and stark inequality</span>
+          </label>
+        </div>
+        <div class="option">
+          <input type="checkbox" id="r-scarSea" name="region" value="The Scar Sea" />
+          <label for="r-scarSea">
+            <span class="option-check"></span>
+            <span class="option-name">The Scar Sea</span>
+            <span class="option-desc">Maritime adventure across the shallow inland sea and its island chains</span>
+          </label>
+        </div>
+        <div class="option">
+          <input type="checkbox" id="r-caldrith" name="region" value="Caldrith (Western Korlornium)" />
+          <label for="r-caldrith">
+            <span class="option-check"></span>
+            <span class="option-name">Caldrith</span>
+            <span class="option-desc">Familiar western Korlornium — forests, mountains, and city politics</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 2: Vibe ── -->
+    <div class="vote-section" id="section-vibe">
+      <h2>II. What vibe should the campaign have?</h2>
+      <p class="section-desc">How should the story feel? Choose all that appeal to you.</p>
+      <div class="options">
+        <div class="option">
+          <input type="checkbox" id="v-intrigue" name="vibe" value="Political intrigue & factions" />
+          <label for="v-intrigue">
+            <span class="option-check"></span>
+            <span class="option-name">Political Intrigue</span>
+            <span class="option-desc">Factions, diplomacy, betrayal, and the slow war of influence</span>
+          </label>
+        </div>
+        <div class="option">
+          <input type="checkbox" id="v-exploration" name="vibe" value="Exploration & discovery" />
+          <label for="v-exploration">
+            <span class="option-check"></span>
+            <span class="option-name">Exploration & Discovery</span>
+            <span class="option-desc">Uncharted lands, first contact, and the joy of the unknown</span>
+          </label>
+        </div>
+        <div class="option">
+          <input type="checkbox" id="v-mystery" name="vibe" value="Mystery & investigation" />
+          <label for="v-mystery">
+            <span class="option-check"></span>
+            <span class="option-name">Mystery & Investigation</span>
+            <span class="option-desc">Secrets hidden in plain sight — who did it, why, and what it costs</span>
+          </label>
+        </div>
+        <div class="option">
+          <input type="checkbox" id="v-piracy" name="vibe" value="Maritime & piracy" />
+          <label for="v-piracy">
+            <span class="option-check"></span>
+            <span class="option-name">High-Seas Adventure</span>
+            <span class="option-desc">Ships, storms, piracy, and the chaos of open water</span>
+          </label>
+        </div>
+        <div class="option">
+          <input type="checkbox" id="v-divine" name="vibe" value="Divine & cosmic conflict" />
+          <label for="v-divine">
+            <span class="option-check"></span>
+            <span class="option-name">Divine & Cosmic Conflict</span>
+            <span class="option-desc">Gods, prophecy, and stakes that threaten the fabric of the world</span>
+          </label>
+        </div>
+        <div class="option">
+          <input type="checkbox" id="v-dungeon" name="vibe" value="Dungeon delving & heists" />
+          <label for="v-dungeon">
+            <span class="option-check"></span>
+            <span class="option-name">Dungeon Delving & Heists</span>
+            <span class="option-desc">Tight encounters, clever planning, and things that live in the dark</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 3: Themes ── -->
+    <div class="vote-section" id="section-themes">
+      <h2>III. What topics do you want to explore?</h2>
+      <p class="section-desc">Deep lore, character arcs, or world questions you want answered.</p>
+      <div class="options">
+        <div class="option">
+          <input type="checkbox" id="t-gods" name="theme" value="The gods and divine politics" />
+          <label for="t-gods">
+            <span class="option-check"></span>
+            <span class="option-name">The Gods</span>
+            <span class="option-desc">Who are they really? What do they want? And what happens when they die?</span>
+          </label>
+        </div>
+        <div class="option">
+          <input type="checkbox" id="t-dragons" name="theme" value="Dragon society & draconic history" />
+          <label for="t-dragons">
+            <span class="option-check"></span>
+            <span class="option-name">Dragon Society</span>
+            <span class="option-desc">The politics of Tiamat's court, the exiled dragons, the Cinderbloom trade</span>
+          </label>
+        </div>
+        <div class="option">
+          <input type="checkbox" id="t-wave" name="theme" value="Origins of The Great Wave" />
+          <label for="t-wave">
+            <span class="option-check"></span>
+            <span class="option-name">The Great Wave</span>
+            <span class="option-desc">What really caused the catastrophe that split Korlornium two thousand years ago?</span>
+          </label>
+        </div>
+        <div class="option">
+          <input type="checkbox" id="t-spirits" name="theme" value="Nature spirits & the Ara" />
+          <label for="t-spirits">
+            <span class="option-check"></span>
+            <span class="option-name">The Ara & Nature Spirits</span>
+            <span class="option-desc">Ancient forces that inhabit the land — patient, strange, and largely ignored</span>
+          </label>
+        </div>
+        <div class="option">
+          <input type="checkbox" id="t-stars" name="theme" value="Stars, moons & celestial mysteries" />
+          <label for="t-stars">
+            <span class="option-check"></span>
+            <span class="option-name">Celestial Mysteries</span>
+            <span class="option-desc">The Skoldrún, the two moons, and the things written in the sky above Goghdor</span>
+          </label>
+        </div>
+        <div class="option">
+          <input type="checkbox" id="t-ruins" name="theme" value="Lost civilizations & ancient ruins" />
+          <label for="t-ruins">
+            <span class="option-check"></span>
+            <span class="option-name">Lost Civilizations</span>
+            <span class="option-desc">The settlements buried under The Scar, the pre-Wave peoples, forgotten histories</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="ornament-hr"></div>
+
+    <!-- ── Tally ── -->
+    <div id="submit-zone">
+      <button id="tally-btn" onclick="showSummary()">Review My Choices</button>
+    </div>
+
+    <div id="summary">
+      <h3>Your Selections</h3>
+      <div id="summary-body"></div>
+      <div style="margin-top:1.2em">
+        <button id="copy-btn" onclick="copyToClipboard()">Copy to Clipboard</button>
+        <span id="copy-confirm">Copied!</span>
+      </div>
+    </div>
+
+
+  </div><!-- /#container -->
+
+  <script>
+    function getChecked(name) {
+      return [...document.querySelectorAll(`input[name="${name}"]:checked`)]
+        .map(el => el.value);
+    }
+
+    function showSummary() {
+      const regions = getChecked('region');
+      const vibes   = getChecked('vibe');
+      const themes  = getChecked('theme');
+
+      const none = '<em>Nothing selected</em>';
+
+      document.getElementById('summary-body').innerHTML = `
+        <div class="summary-section">
+          <div class="summary-label">Region</div>
+          <div class="summary-picks">${regions.length ? regions.join(' &middot; ') : none}</div>
+        </div>
+        <div class="summary-section">
+          <div class="summary-label">Vibe</div>
+          <div class="summary-picks">${vibes.length ? vibes.join(' &middot; ') : none}</div>
+        </div>
+        <div class="summary-section">
+          <div class="summary-label">Themes</div>
+          <div class="summary-picks">${themes.length ? themes.join(' &middot; ') : none}</div>
+        </div>
+      `;
+
+      const el = document.getElementById('summary');
+      el.style.display = 'block';
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function copyToClipboard() {
+      const regions = getChecked('region');
+      const vibes   = getChecked('vibe');
+      const themes  = getChecked('theme');
+
+      const text = [
+        '=== Next Adventure Vote ===',
+        '',
+        'Region: ' + (regions.join(', ') || 'none'),
+        'Vibe: '   + (vibes.join(', ')   || 'none'),
+        'Themes: ' + (themes.join(', ')  || 'none'),
+      ].join('\n');
+
+      navigator.clipboard.writeText(text).then(() => {
+        const el = document.getElementById('copy-confirm');
+        el.classList.add('show');
+        setTimeout(() => el.classList.remove('show'), 2200);
+      });
+    }
+  </script>
+</body>
+</html>
