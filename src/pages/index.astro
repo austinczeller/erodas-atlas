@@ -2,20 +2,33 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
-<BaseLayout title="Erodian Encyclopedia" description="The collected knowledge of the Erodian Atlasing Society — continents, gods, factions, history, and more.">
+<BaseLayout description="The collected knowledge of the Erodian Atlasing Society — continents, gods, factions, history, and more.">
 
   <div class="enc-homepage">
 
+    <h1 class="enc-atlas-title">The Erodian Atlas</h1>
+    <p class="enc-atlas-subtitle">A Living Compendium of the Known World</p>
+    <div class="enc-atlas-ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
+
     <div class="enc-preface">
-      <em>Compiled and maintained by the <strong>Erodian Atlasing Society</strong></em>
-      <blockquote>
-        My associates and I have been compiling histories of this ancient land for as long as the Fowlmen have walked Siroth.
-        Korlornium is quite a fascinating continent full of geopolitical conflict, natural wonders, and debauchery.
-        Due to the instability over the past 2000 years, information is difficult to come by for this region.
-        Thereby you may notice gaps in our manuscripts — but be advised we will update this text as new information
-        and historical accounts come to light. We hope you enjoy reading the collected text and may immerse yourself
-        in the rich and mysterious land which many of the authors of this text call home.
-      </blockquote>
+      <p class="enc-preface-label">A note from the Erodian Atlasing Society</p>
+      <p>
+        You have opened the Atlas of Erodas. This compendium has been assembled by our scholars over many decades,
+        drawing on field reports, historical accounts, diplomatic correspondence, and the testimonies of travelers
+        from every corner of the known world.
+      </p>
+      <p>
+        What distinguishes this archive from ordinary encyclopedias is its nature: through means of sustained arcane
+        inscription, these pages refresh automatically as our scholars commit new findings to the record. When
+        civilizations shift, when deities act, when new lands come into correspondence with the Society — the Atlas
+        reflects it. You may read a page today that did not exist yesterday.
+      </p>
+      <p>
+        Erodas is vast and not fully understood. Four continents are known. Countless islands, depths, and planes
+        remain unmapped. What you find here represents the current state of scholarly knowledge — nothing more,
+        nothing less. Where certainty gives way to speculation, we have noted it.
+      </p>
+      <p class="enc-sig">— The Erodian Atlasing Society, Est. ~1200 A.G.W.</p>
     </div>
 
     <div class="enc-nav-cards">
@@ -33,14 +46,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       </a>
     </div>
 
-    <hr />
-
     <h2>The Known World of Erodas</h2>
 
     <p>
       <a href={`${base}/world-(erodas)/erodas`}>Erodas</a> is a living world — two moons overhead, four seasons,
       and a history older than memory. Below are the continents currently charted by the Atlasing Society.
-      Some are well-documented; others remain at the edge of legend.
     </p>
 
     <div class="continent-grid">
@@ -49,11 +59,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <h3><a href={`${base}/world-(erodas)/korlornium`}>Korlornium</a></h3>
         <em>A small, isolated continent — the heart of the campaign</em>
         <p>
-          A land of theological strife, diverse ecology, and unique geological phenomena.
-          Divided by <a href={`${base}/world-(erodas)/korlornium/the-scar`}>The Scar</a>, the western forests of
+          A land of theological strife, diverse ecology, and unique geological phenomena. Divided by
+          <a href={`${base}/world-(erodas)/korlornium/the-scar-sea/the-scar`}>The Scar</a>, the western forests of
           <a href={`${base}/world-(erodas)/korlornium/caldrith`}>Caldrith</a> are home to wealthy cities and complex factions,
           while the arid eastern expanse of <a href={`${base}/world-(erodas)/korlornium/siroth`}>Siroth</a> is harsh,
-          conservative, and deep with history. Two thousand years since the Great Wave, the scars of catastrophe still shape its people.
+          conservative, and deep with history.
         </p>
       </div>
 
@@ -62,9 +72,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <em>Volcanic continent of draconic origin — ruled by the dragon queen</em>
         <p>
           The air above Dracofold smells of sulfur and hot stone. Tiamat's rule is absolute here — chromatic dragons
-          serve as her lieutenants, and humanoid populations survive under their shadow. Rogue dragons exiled from her
-          court have spread across Erodas, settling in remote regions and establishing their own smaller tyrannies.
-          At the continent's molten heart lies the <strong>Cradle of Scales</strong>, where all dragonkind is said to have been born.
+          serve as her lieutenants, and humanoid populations survive under their shadow. At the continent's molten
+          heart lies the <strong>Cradle of Scales</strong>, where all dragonkind is said to have been born.
         </p>
       </div>
 
@@ -72,10 +81,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <h3><a href={`${base}/world-(erodas)/goghdor`}>Goghdor</a></h3>
         <em>A towering fjord — closer to the heavens than anywhere else on Erodas</em>
         <p>
-          Known across Erodas as <strong>The Reach</strong>, Goghdor is not a continent in the traditional sense —
-          it is a single colossal rock rising from the ocean, its peaks so high that those who live at the summit exist
-          above the clouds. Home to the <strong>Star Touched</strong>, Aasimar of elven and dwarven blood whose culture
-          is built entirely around the celestial.
+          Known across Erodas as <strong>The Reach</strong>, Goghdor is a single colossal rock rising from the ocean,
+          its peaks so high that those who live at the summit exist above the clouds. Home to the <strong>Star
+          Touched</strong>, Aasimar of elven and dwarven blood whose culture is built entirely around the celestial.
         </p>
       </div>
 
@@ -83,15 +91,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <h3><a href={`${base}/world-(erodas)/seivara`}>Seivara</a></h3>
         <em>Ancient jungle continent — more legend than fact to most of Korlornium</em>
         <p>
-          Sailors who have seen its coastline describe a wall of green so dense the sea appears to simply end at a forest.
-          Seivara has no kings, no churches, and no organized religion. Authority here belongs to the <strong>Ara</strong> —
-          ancient nature spirits that inhabit every river, grove, and tidal pool.
+          Sailors who have seen its coastline describe a wall of green so dense the sea appears to simply end at a
+          forest. Seivara has no kings, no churches, and no organized religion. Authority belongs to the
+          <strong>Ara</strong> — ancient nature spirits that inhabit every river, grove, and tidal pool.
         </p>
       </div>
 
     </div>
-
-    <hr />
 
     <h2>Explore the Encyclopedia</h2>
 
