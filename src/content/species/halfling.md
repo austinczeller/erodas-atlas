@@ -1,6 +1,6 @@
 ---
 title: Halfling
-rarity: Uncommon
+rarity: Common
 description: Small, stout folk of quiet, secluded farming villages.
 order: 12
 ---

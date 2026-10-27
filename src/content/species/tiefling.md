@@ -1,6 +1,6 @@
 ---
 title: Tiefling
-rarity: Uncommon
+rarity: Common
 description: Mortals with the blood of the lower planes, marked by horns and tails.
 order: 14
 ---

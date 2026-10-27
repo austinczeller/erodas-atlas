@@ -1,6 +1,6 @@
 ---
 title: Gnome
-rarity: Uncommon
+rarity: Common
 description: Secretive crafters and mages, thought to be among Korlornium's first settlers.
 order: 13
 ---

@@ -1,6 +1,6 @@
 ---
 title: Aasimar
-rarity: Rare
+rarity: Uncommon
 description: Mortals of celestial blood. On Goghdor, the Star Touched.
 order: 21
 ---

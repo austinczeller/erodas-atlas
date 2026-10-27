@@ -1,6 +1,6 @@
 ---
 title: Dragonborn
-rarity: Uncommon
+rarity: Common
 description: People of draconic descent from Dracofold, met in Korlornium's port cities.
 order: 10
 ---
@@ -14,4 +14,4 @@ The Ashen Communion, a seasonal ritual in which communities drank diluted Cinder
 
 ## In Korlornium
 
-Dragonborn are uncommon in [[Korlornium]] but not unknown, particularly in port cities like [[Stormveil]] and [[Dithoria City]]. They tend to be regarded with a mix of wariness and curiosity. The association with [[Dracofold]] and its draconic rulers is not forgotten, even for those whose families left generations ago.
+Dragonborn are common in [[Korlornium]], particularly in port cities like [[Stormveil]] and [[Dithoria City]]. They tend to be regarded with a mix of wariness and curiosity. The association with [[Dracofold]] and its draconic rulers is not forgotten, even for those whose families left generations ago.

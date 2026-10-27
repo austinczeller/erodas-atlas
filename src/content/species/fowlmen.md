@@ -1,6 +1,6 @@
 ---
 title: Fowlmen
-rarity: Rare
+rarity: Uncommon
 description: Humanoid falcons of the Siroth deserts, hunted during the persecution of magic users.
 order: 20
 ---
