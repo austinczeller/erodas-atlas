@@ -60,7 +60,7 @@ const figures = defineCollection({
     title: z.string(),
     // A short line under the name, e.g. "Founder of Dithoria City".
     role: z.string(),
-    group: z.enum(["Figures of history", "Rulers and leaders", "Captains of the Scar"]),
+    group: z.enum(["Figures of history", "Captains of the Scar"]),
     order: z.number().default(100),
     aliases,
   }),

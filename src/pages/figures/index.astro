@@ -3,14 +3,14 @@ import Base from "../../layouts/Base.astro";
 import { figureUrl, getFigures } from "../../lib/content";
 
 const figures = await getFigures();
-const groups = ["Figures of history", "Rulers and leaders", "Captains of the Scar"] as const;
+const groups = ["Figures of history", "Captains of the Scar"] as const;
 ---
 
 <Base title="Notable Figures" section="figures" description="The famous people of Korlornium and Erodas.">
   <div class="page">
     <header class="head">
       <h1>Notable figures</h1>
-      <p class="dek">The founders, rulers, champions and captains whose names are known across Korlornium.</p>
+      <p class="dek">The founders, champions and captains whose names are known across Korlornium.</p>
     </header>
 
     {

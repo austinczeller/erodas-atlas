@@ -1,6 +1,9 @@
 ---
 import Base from "../../layouts/Base.astro";
-import { getHistory, historyUrl } from "../../lib/content";
+import { base, getHistory, historyUrl } from "../../lib/content";
+import { months, ordinal, today, weekdayOf } from "../../data/calendar";
+
+const todayLabel = `${weekdayOf(today.day).name}, the ${ordinal(today.day)} of ${months[today.month - 1].name}`;
 
 const entries = await getHistory();
 const timeline = entries.filter((e) => e.data.kind !== "Observance");
@@ -35,6 +38,13 @@ const observances = entries.filter((e) => e.data.kind === "Observance");
             </li>
           ))
         }
+        <li class="now">
+          <span class="when">Today</span>
+          <div>
+            <a href={`${base}/calendar/`}>{todayLabel}</a>
+            <p>The present day in Korlornium, and the start of the next adventure in Dithoria City.</p>
+          </div>
+        </li>
       </ol>
     </section>
 
@@ -100,6 +110,13 @@ const observances = entries.filter((e) => e.data.kind === "Observance");
     border-radius: 50%;
     background: var(--stone);
     border: 2px solid var(--label-red);
+  }
+  .timeline li.now::before {
+    background: var(--label-red);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--label-red) 25%, transparent);
+  }
+  .now .when {
+    color: var(--label-red);
   }
   .when {
     font-family: var(--font-sc);

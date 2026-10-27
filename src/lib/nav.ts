@@ -57,7 +57,7 @@ export async function getNav(): Promise<NavMenu[]> {
       label: "Notable Figures",
       href: `${base}/figures/`,
       overview: "All notable figures",
-      groups: ["Figures of history", "Rulers and leaders", "Captains of the Scar"].map((heading) => ({
+      groups: ["Figures of history", "Captains of the Scar"].map((heading) => ({
         heading,
         links: figures.filter((f) => f.data.group === heading).map(link("figures")),
       })),
