@@ -31,6 +31,7 @@ export async function getNav(): Promise<NavMenu[]> {
   const gods = (await getCollection("gods")).sort(byOrder);
   const history = (await getCollection("history")).sort(byOrder);
   const sky = (await getCollection("sky")).sort(byOrder);
+  const species = (await getCollection("species")).sort(byOrder);
 
   const link = (collection: string) => (e: { id: string; data: { title: string } }) => ({
     label: e.data.title,
@@ -59,6 +60,16 @@ export async function getNav(): Promise<NavMenu[]> {
       groups: ["Figures of history", "Rulers and leaders", "Captains of the Scar"].map((heading) => ({
         heading,
         links: figures.filter((f) => f.data.group === heading).map(link("figures")),
+      })),
+    },
+    {
+      id: "species",
+      label: "Notable Species",
+      href: `${base}/species/`,
+      overview: "The peoples of Korlornium",
+      groups: (["Common", "Uncommon", "Rare"] as const).map((rarity) => ({
+        heading: `${rarity} in Korlornium`,
+        links: species.filter((s) => s.data.rarity === rarity).map(link("species")),
       })),
     },
     {

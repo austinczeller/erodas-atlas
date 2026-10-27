@@ -43,6 +43,8 @@ There is a strict limitation of the use of magic within the walls of the city. T
 
 The council states these restrictions are for public safety. The church teaches that all magic is the power of [[Dithoria]], and that it should only be wielded by the worthy, as in the hands of the unholy it corrupts. Most people no longer believe this, but some fundamentalists still do. This has created a division in the city's society, as the control of magic is heavily regulated.
 
+There is a real tension between the city's fundamentalist Dithorians and its moderate and non-religious citizens. To the fundamentalists, every unlicensed spell is a theft from the god and every doubter a danger to the city. To the moderates, the permits are a matter of law, not faith. The divide runs through families, guilds and congregations, and it grows sharper each time the control of magic is tightened.
+
 Nearly everything in [[Dithoria City]] requires a permit. Every business must display its permits, and citizens are often asked to show their identification and personal permits to the Arcane Order.
 
 **The Keeper's Council** is a collection of powerful people within the city's government. It is made up of devoted magistrates and clerics responsible for maintaining the city's laws and societal order, and it is housed in the Citadel of Order alongside the High Priesthood.

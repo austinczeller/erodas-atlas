@@ -1,0 +1,79 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getSpecies, speciesUrl } from "../../lib/content";
+
+const species = await getSpecies();
+const groups = ["Common", "Uncommon", "Rare"] as const;
+---
+
+<Base title="Notable Species" section="species" description="The peoples of Korlornium, from the common to the rarely seen.">
+  <div class="page">
+    <header class="head">
+      <h1>Notable species</h1>
+      <p class="dek">
+        Korlornium is full of diverse cultures and peoples from a variety of intelligent species.
+        These are the ones most often met on the continent, and a few that are rarely seen.
+      </p>
+    </header>
+
+    {
+      groups.map((rarity) => {
+        const members = species.filter((s) => s.data.rarity === rarity);
+        if (members.length === 0) return null;
+        return (
+          <section>
+            <h2>{rarity} in Korlornium</h2>
+            <dl class="roll">
+              {members.map((s) => (
+                <div>
+                  <dt>
+                    <a href={speciesUrl(s.id)}>{s.data.title}</a>
+                  </dt>
+                  <dd>{s.data.description}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        );
+      })
+    }
+  </div>
+</Base>
+
+<style>
+  .page {
+    max-width: 78rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 3.5rem) var(--gutter) 0;
+  }
+  .dek {
+    max-width: var(--measure);
+    color: var(--ink-soft);
+    margin: 0.6rem 0 0;
+  }
+  .roll {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    column-gap: 3rem;
+    border-top: 1px solid var(--rule);
+  }
+  .roll > div {
+    padding: 0.8rem 0 0.9rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .roll dt a {
+    font-family: var(--font-sc);
+    font-size: 1.35rem;
+    text-decoration: none;
+  }
+  .roll dt a:hover {
+    text-decoration: underline;
+  }
+  .roll dd {
+    margin: 0.1rem 0 0;
+    color: var(--ink-soft);
+    font-size: 1rem;
+    line-height: 1.45;
+  }
+</style>

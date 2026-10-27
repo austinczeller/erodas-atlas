@@ -78,4 +78,16 @@ const sky = defineCollection({
   }),
 });
 
-export const collections = { places, gods, history, figures, sky };
+const species = defineCollection({
+  loader: glob({ pattern: "*.md", base: "./src/content/species" }),
+  schema: z.object({
+    title: z.string(),
+    // How often the species is met in Korlornium.
+    rarity: z.enum(["Common", "Uncommon", "Rare"]),
+    description: z.string(),
+    order: z.number().default(100),
+    aliases,
+  }),
+});
+
+export const collections = { places, gods, history, figures, sky, species };

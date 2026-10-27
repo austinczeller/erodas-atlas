@@ -5,12 +5,13 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const COLLECTIONS = ["places", "gods", "history", "figures", "sky"];
+const COLLECTIONS = ["places", "gods", "history", "figures", "sky", "species"];
 const EXTRA_PAGES = {
   "next adventure": "next-adventure/",
   calendar: "calendar/",
   gods: "gods/",
   "inspiration board": "inspiration/",
+  "notable species": "species/",
   "notable figures": "figures/",
   "the erodian standard calendar": "calendar/",
 };

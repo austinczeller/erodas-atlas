@@ -1,10 +1,14 @@
 ---
 // The inspiration board: every image in src/assets/inspiration/ appears here,
 // optimized by Astro. The file name is the caption; a leading number sets the order.
+// Credits live in credits.json, keyed by file name without the extension.
 import type { ImageMetadata } from "astro";
 import { Image } from "astro:assets";
 import Base from "../layouts/Base.astro";
 import { base } from "../lib/content";
+import credits from "../assets/inspiration/credits.json";
+
+const creditFor = credits as Record<string, string>;
 
 const files = import.meta.glob<{ default: ImageMetadata }>("../assets/inspiration/*.{jpg,jpeg,png,webp,avif,gif}", {
   eager: true,
@@ -17,7 +21,7 @@ const images = Object.entries(files)
       .replace(/^\d+[-_ ]*/, "")
       .replace(/[-_]+/g, " ")
       .replace(/^./, (c) => c.toUpperCase());
-    return { name, caption, src: mod.default };
+    return { name, caption, credit: creditFor[name], src: mod.default };
   })
   .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
 ---
@@ -38,7 +42,10 @@ const images = Object.entries(files)
               <a href={img.src.src}>
                 <Image src={img.src} alt={img.caption} widths={[400, 800]} sizes="(max-width: 40rem) 100vw, 400px" />
               </a>
-              <figcaption>{img.caption}</figcaption>
+              <figcaption>
+                {img.caption}
+                {img.credit && <span class="credit">{img.credit}</span>}
+              </figcaption>
             </figure>
           ))}
         </div>
@@ -86,6 +93,12 @@ const images = Object.entries(files)
     font-size: 0.95rem;
     color: var(--ink-soft);
     font-style: italic;
+  }
+  .credit {
+    display: block;
+    font-style: normal;
+    font-size: 0.82rem;
+    opacity: 0.85;
   }
   .empty {
     color: var(--ink-soft);

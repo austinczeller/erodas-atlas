@@ -4,7 +4,7 @@ The next campaign begins in [[Dithoria City]], the largest city in [[Korlornium]
 
 Whispers of unrest are growing inside the city's white walls. Citizens have begun to distrust the government, and criminal activity is on the rise. Some believe the city's reliance on [[Dithoria]]'s protection is faltering, while others claim the Keeper's Council is growing corrupt. Strange creatures have been reported in and around the city, and no one in authority will say where they come from.
 
-Magic is the dividing line. The church teaches that all magic is the power of [[Dithoria]], and the Keeper's Council restricts its use within the walls. Only wizards certified by the Arcane Order of Dithoria may practice it, and the Arcane Order, who act as the city's police, check the permits of everyone from merchants to passers-by. Most citizens no longer believe magic belongs to the god, but some fundamentalists still do, and the argument splits families, guilds and congregations.
+Magic is the dividing line. The church teaches that all magic is the power of [[Dithoria]], and the Keeper's Council restricts its use within the walls. Only wizards certified by the Arcane Order of Dithoria may practice it, and the Arcane Order, who act as the city's police, check the permits of everyone from merchants to passers-by. Most citizens no longer believe magic belongs to the god, but some fundamentalists still do. There is a real tension between these fundamentalist Dithorians and the city's moderate and non-religious citizens, and the argument splits families, guilds and congregations.
 
 ## Questions to help build a character
 

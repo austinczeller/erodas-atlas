@@ -32,6 +32,11 @@ export function mapPins(places: Place[]) {
 
 export const figureUrl = (id: string) => `${base}/figures/${id}/`;
 export const skyUrl = (id: string) => `${base}/sky/${id}/`;
+export const speciesUrl = (id: string) => `${base}/species/${id}/`;
+
+export async function getSpecies() {
+  return (await getCollection("species")).sort(byOrder);
+}
 
 export async function getFigures() {
   return (await getCollection("figures")).sort(byOrder);

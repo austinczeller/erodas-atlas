@@ -17,7 +17,7 @@ Much of these trades are sent to [[Dithoria City]] across [[The Scar]] Sea via t
 
 ## Peoples
 
-[[Korlornium]] is full of diverse cultures and peoples from a variety of intelligent species.
+[[Korlornium]] is full of diverse cultures and peoples from a variety of intelligent species. See [[Notable species]] for each of them.
 
 Fowlmen are a unique species to Korlornium who come from the deserts of [[Siroth]]. They resemble large humanoid falcons and are tied to the great magics of earth and sky. During the persecution of magic users, Fowlmen either escaped to the Southern Siroth Desert or were killed. Few escaped to [[Dithoria City]] as they have a deep connection to the land and the skies of [[Siroth]]. Nowadays, they occasionally appear in cities across Korlornium but rarely stay long.
 

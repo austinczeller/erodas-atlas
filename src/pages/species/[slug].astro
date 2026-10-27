@@ -1,0 +1,51 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import { base, getSpecies } from "../../lib/content";
+
+export async function getStaticPaths() {
+  const species = await getSpecies();
+  return species.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props as { entry: CollectionEntry<"species"> };
+const { Content } = await render(entry);
+const d = entry.data;
+---
+
+<Base title={d.title} section="species" description={d.description}>
+  <article class="entry">
+    <header>
+      <p class="trail"><a href={`${base}/species/`}>Notable species</a> / {d.rarity} in Korlornium</p>
+      <h1>{d.title}</h1>
+      <p class="dek">{d.description}</p>
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</Base>
+
+<style>
+  .entry {
+    max-width: 78rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 3.5rem) var(--gutter) 0;
+  }
+  .trail {
+    margin: 0 0 0.6rem;
+    font-size: 1rem;
+    color: var(--ink-soft);
+  }
+  .trail a {
+    color: inherit;
+  }
+  .dek {
+    max-width: var(--measure);
+    margin: 0.7rem 0 2.5rem;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.45;
+  }
+</style>
