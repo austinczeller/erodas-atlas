@@ -19,7 +19,7 @@ In [[Siroth]], the Rellian Dynasty is remembered for its ideals of equality, and
 
 Most of the fighting took place on the land bridge near [[Konduit]], where [[Caldrith]] and [[Siroth]] still meet in the north. The Righteous Banner was rallied by [[Dithoria City]] and blessed by [[Dithoria]] to keep his kingdom safe. It was commanded by Hethul, the Righteous, a mighty goliath warrior who wielded the Lawbearer's Hammer.
 
-The war came to a conclusion as religious forces from [[Dithoria City]] pushed the Rellian troops out of [[Wyegate]]. At the Battle of [[Wyegate]], the Righteous Banner defeated much of the Rellian troops and united northern [[Caldrith]] under its banner. Dithorian texts say the magic of [[Dithoria]] was able to cleanse the Ascendants of their power.
+The war came to a conclusion as religious forces from [[Dithoria City]] pushed the Rellian troops out of [[Wyegate]]. At the [[Battle of Wyegate]], the Righteous Banner defeated much of the Rellian troops and united northern [[Caldrith]] under its banner. Dithorian texts say the magic of [[Dithoria]] was able to cleanse the Ascendants of their power.
 
 ## Afterward
 

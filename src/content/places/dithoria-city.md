@@ -79,7 +79,7 @@ The Mortar Gardens is a park and gathering place in the Third Ring, with beautif
 
 ## The Righteous Banner
 
-The Righteous Banner is the military brigade rallied during [[The Divergent War]], blessed by [[Dithoria]] to keep his kingdom safe. It defeated much of the Rellian troops at the Battle of [[Wyegate]], commanded by Hethul, the Righteous, a mighty goliath warrior who wielded the Lawbearer's Hammer. The hammer is held today by the Keeper's Council. The Righteous Banner still controls much of [[Caldrith]]'s northeastern land, except for the free city of [[Konduit]].
+The Righteous Banner is the military brigade rallied during [[The Divergent War]], blessed by [[Dithoria]] to keep his kingdom safe. It defeated much of the Rellian troops at the [[Battle of Wyegate]], commanded by Hethul, the Righteous, a mighty goliath warrior who wielded the Lawbearer's Hammer. The hammer is held today by the Keeper's Council. The Righteous Banner still controls much of [[Caldrith]]'s northeastern land, except for the free city of [[Konduit]].
 
 ## Culture and society
 
