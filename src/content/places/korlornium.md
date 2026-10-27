@@ -1,6 +1,7 @@
 ---
 title: Korlornium
 kind: Continent
+parent: erodas
 description: A small, isolated island continent, divided both physically and politically.
 order: 1
 ---

@@ -1,6 +1,7 @@
 ---
 title: Casela
 kind: Continent
+parent: erodas
 description: A large and dangerous continent, home to massive towering giants and unspeakable horrors.
 order: 5
 ---

@@ -1,0 +1,133 @@
+---
+// A pannable, zoomable Korlornium map (Leaflet). Optionally centred on one
+// place, which gets a ring; every place with a position gets a pin that
+// links to its page. Scroll-wheel zoom switches on once the map is clicked,
+// so the page still scrolls normally past it.
+import "leaflet/dist/leaflet.css";
+
+interface Pin {
+  title: string;
+  href: string;
+  x: number;
+  y: number;
+}
+interface Props {
+  pins: Pin[];
+  // The place to centre on, as fractions of the map's width and height.
+  focus?: { x: number; y: number; title: string };
+  // Starting zoom: how many map-heights fit the frame's height (1 = the whole map).
+  zoom?: number;
+  // Frame shape: "square" for a sidebar, "wide" for a full-width map.
+  shape?: "square" | "wide";
+  label: string;
+}
+
+const { pins, focus, zoom = 1, shape = "square", label } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const config = JSON.stringify({ pins, focus, zoom, image: `${base}/images/korlornium-map.webp` });
+---
+
+<div class:list={["zoom-map", shape]} data-config={config} role="region" aria-label={label}>
+  <noscript>
+    <img src={`${base}/images/korlornium-map.webp`} alt="Map of Korlornium" />
+  </noscript>
+</div>
+
+<script>
+  import L from "leaflet";
+
+  const W = 1920;
+  const H = 1080;
+  // Map fractions to Leaflet's flat coordinates (y grows downward on the image).
+  const at = (x: number, y: number) => L.latLng(-y * H, x * W);
+
+  for (const el of document.querySelectorAll<HTMLElement>(".zoom-map")) {
+    const { pins, focus, zoom, image } = JSON.parse(el.dataset.config!);
+    const bounds = L.latLngBounds(at(0, 1), at(1, 0));
+
+    const map = L.map(el, {
+      crs: L.CRS.Simple,
+      zoomSnap: 0.25,
+      zoomDelta: 0.5,
+      scrollWheelZoom: false,
+      attributionControl: false,
+      maxBounds: bounds.pad(0.15),
+      maxBoundsViscosity: 0.8,
+    });
+    L.imageOverlay(image, bounds).addTo(map);
+
+    // Zoom 0 draws the map at its full 1920 x 1080 size; each step doubles it.
+    // The smallest zoom shows the whole map inside the frame.
+    const whole = Math.log2(Math.min(el.clientWidth / W, el.clientHeight / H));
+    map.setMinZoom(Math.floor(whole * 4) / 4);
+    map.setMaxZoom(1.5);
+
+    if (focus) {
+      // "zoom" map-heights per frame height, measured from the frame's height.
+      const start = Math.log2((el.clientHeight * zoom) / H);
+      map.setView(at(focus.x, focus.y), start);
+      L.circleMarker(at(focus.x, focus.y), {
+        radius: 16,
+        color: "#8e2414",
+        weight: 2.5,
+        fill: false,
+        interactive: false,
+      }).addTo(map);
+    } else {
+      map.fitBounds(bounds);
+    }
+
+    const pinIcon = L.divIcon({ className: "atlas-pin", iconSize: [14, 14] });
+    for (const pin of pins) {
+      const marker = L.marker(at(pin.x, pin.y), { icon: pinIcon, title: pin.title, alt: pin.title, riseOnHover: true });
+      marker.bindTooltip(pin.title, { direction: "top", offset: [0, -8], className: "atlas-tip" });
+      marker.on("click", () => (window.location.href = pin.href));
+      marker.addTo(map);
+    }
+
+    // Wheel zoom only once someone has clicked into the map.
+    map.on("click focus", () => map.scrollWheelZoom.enable());
+    el.addEventListener("mouseleave", () => map.scrollWheelZoom.disable());
+  }
+</script>
+
+<style>
+  .zoom-map {
+    width: 100%;
+    background: #3d6b6b;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 0.3);
+    z-index: 0;
+  }
+  .square {
+    aspect-ratio: 1;
+  }
+  .wide {
+    aspect-ratio: 16 / 9;
+    max-height: 78vh;
+  }
+  .zoom-map :global(.atlas-pin) {
+    border-radius: 50%;
+    background: #f6efe0;
+    border: 2px solid #8e2414;
+    box-shadow: 0 0 0 2px rgb(255 255 255 / 0.45);
+    cursor: pointer;
+  }
+  .zoom-map :global(.atlas-pin:hover),
+  .zoom-map :global(.atlas-pin:focus-visible) {
+    background: #8e2414;
+  }
+  .zoom-map :global(.atlas-tip) {
+    font-family: var(--font-sc);
+    font-size: 0.95rem;
+    color: #1a2427;
+    background: #f6f8f7;
+    border: 1px solid #8e2414;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0.15em 0.55em 0.2em;
+  }
+  .zoom-map :global(.leaflet-bar a) {
+    color: #1a2427;
+    font-family: Georgia, serif;
+  }
+</style>

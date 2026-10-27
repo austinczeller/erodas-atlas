@@ -1,6 +1,7 @@
 ---
 title: Goghdor
 kind: Continent
+parent: erodas
 description: A towering fjord rising from the ocean, home to the Star Touched. Commonly known as the Reach.
 order: 2
 aliases:

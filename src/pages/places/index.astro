@@ -1,12 +1,16 @@
 ---
 import Base from "../../layouts/Base.astro";
-import AtlasMap from "../../components/AtlasMap.astro";
+import ZoomMap from "../../components/ZoomMap.astro";
 import { getPlaces, mapPins, placeUrl } from "../../lib/content";
 
 const places = await getPlaces();
 const pins = mapPins(places);
 
 const groups = [
+  {
+    title: "The world",
+    items: places.filter((p) => p.data.kind === "World"),
+  },
   {
     title: "The continents of Erodas",
     note: "Korlornium is only one of the lands of Erodas. Little is known in Korlornium of the others.",
@@ -32,12 +36,15 @@ const groups = [
     <header class="head">
       <h1>Places</h1>
       <p class="dek">
-        Select a marker on the map, or browse the gazetteer below. The map is a work in progress
+        Select a pin on the map, or browse the gazetteer below. The map is a work in progress
         and may change as new lands are charted.
       </p>
     </header>
 
-    <AtlasMap pins={pins} caption="Korlornium, as charted by the Erodian Atlasing Society." />
+    <figure class="map">
+      <ZoomMap pins={pins} shape="wide" label="Map of Korlornium" />
+      <figcaption>Korlornium, as charted by the Erodian Atlasing Society. Use the buttons or click the map and scroll to zoom.</figcaption>
+    </figure>
 
     {
       groups.map((group) => (
@@ -73,6 +80,15 @@ const groups = [
     max-width: var(--measure);
     color: var(--ink-soft);
     margin: 0.6rem 0 0;
+  }
+  .map {
+    margin: 0;
+  }
+  .map figcaption {
+    margin-top: 0.7rem;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--ink-soft);
   }
   .group h2 {
     margin-top: 2.2em;

@@ -1,8 +1,8 @@
 ---
 import { render } from "astro:content";
 import Base from "../../layouts/Base.astro";
-import Locator from "../../components/Locator.astro";
-import { base, getPlaces, placeUrl, type Place } from "../../lib/content";
+import ZoomMap from "../../components/ZoomMap.astro";
+import { base, getPlaces, mapPins, placeUrl, type Place } from "../../lib/content";
 
 export async function getStaticPaths() {
   const places = await getPlaces();
@@ -51,7 +51,16 @@ const within = places.filter((p) => p.data.parent === place.id);
       </div>
 
       <aside class="facts" aria-label={`About ${d.title}`}>
-        {d.map && <Locator x={d.map.x} y={d.map.y} title={d.title} zoom={d.mapZoom} />}
+        {
+          d.map && (
+            <ZoomMap
+              pins={mapPins(places)}
+              focus={{ ...d.map, title: d.title }}
+              zoom={d.mapZoom}
+              label={`Map of Korlornium, centred on ${d.title}`}
+            />
+          )
+        }
         {
           d.image && (
             <img class="plate" src={`${base}/images/${d.image}`} alt={d.imageAlt ?? ""} loading="lazy" />

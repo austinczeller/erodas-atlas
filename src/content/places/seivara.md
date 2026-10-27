@@ -1,6 +1,7 @@
 ---
 title: Seivara
 kind: Continent
+parent: erodas
 description: A distant jungle continent of nature spirits, elves, and pixies. More legend than fact to most of Korlornium.
 order: 3
 ---

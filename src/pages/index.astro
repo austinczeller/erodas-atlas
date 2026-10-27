@@ -42,13 +42,19 @@ const sections = [
 <Base description="A player's atlas of Korlornium and the wider world of Erodas.">
   <section class="hero">
     <div class="hero-inner">
-      <AtlasMap pins={pins} />
+      <AtlasMap pins={pins} caption="Korlornium, a continent of Erodas." />
     </div>
   </section>
 
   <div class="intro">
     <div class="preface">
-      <h1>Welcome to Korlornium</h1>
+      <h1>The world of Erodas</h1>
+      <p class="lead">
+        Erodas is an earth-like world of many continents, beneath two moons. This atlas is mostly
+        concerned with one of them: Korlornium, a small and isolated continent divided by the Scar.
+        <a href={`${base}/places/erodas/`}>Read about the world of Erodas</a>.
+      </p>
+      <h2>Welcome to Korlornium</h2>
       <p>
         My associates and I have been compiling histories of this ancient land for as long as the
         Fowlmen have walked Siroth. Korlornium is quite a fascinating continent full of
@@ -80,6 +86,9 @@ const sections = [
     background: var(--mast-bg);
     padding: 0 var(--gutter) clamp(1.5rem, 4vw, 3rem);
   }
+  .hero :global(figcaption) {
+    color: var(--mast-muted);
+  }
   .hero-inner {
     max-width: 78rem;
     margin: 0 auto;
@@ -93,7 +102,14 @@ const sections = [
     gap: clamp(2rem, 6vw, 6rem);
   }
   .preface h1 {
-    margin-bottom: 0.6em;
+    margin-bottom: 0.4em;
+  }
+  .lead {
+    font-size: 1.3rem;
+    line-height: 1.5;
+  }
+  .preface h2 {
+    margin-top: 1.6em;
   }
   .preface p {
     max-width: var(--measure);

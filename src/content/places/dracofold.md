@@ -1,6 +1,7 @@
 ---
 title: Dracofold
 kind: Continent
+parent: erodas
 description: A volcanic continent of draconic origin, ruled by the dragon queen Tiamat.
 order: 4
 ---

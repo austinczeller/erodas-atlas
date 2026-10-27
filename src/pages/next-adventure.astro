@@ -1,8 +1,10 @@
 ---
 import Base from "../layouts/Base.astro";
 import { Content } from "../writing/next-adventure.md";
-import Locator from "../components/Locator.astro";
-import { base } from "../lib/content";
+import ZoomMap from "../components/ZoomMap.astro";
+import { base, getPlaces, mapPins } from "../lib/content";
+
+const pins = mapPins(await getPlaces());
 ---
 
 <Base
@@ -20,7 +22,7 @@ import { base } from "../lib/content";
         <Content />
       </div>
       <aside class="side" aria-label="Where it begins">
-        <Locator x={0.509} y={0.314} title="Dithoria City" zoom={2.2} />
+        <ZoomMap pins={pins} focus={{ x: 0.509, y: 0.314, title: "Dithoria City" }} zoom={2.2} label="Map of Korlornium, centred on Dithoria City" />
         <p>
           The campaign begins in <a href={`${base}/places/dithoria-city/`}>Dithoria City</a>, on the
           coast of the Scar in northern Caldrith.

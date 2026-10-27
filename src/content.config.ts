@@ -10,7 +10,7 @@ const places = defineCollection({
   loader: glob({ pattern: "*.md", base: "./src/content/places" }),
   schema: z.object({
     title: z.string(),
-    kind: z.enum(["Continent", "Region", "City", "Town", "Island", "Landmark"]),
+    kind: z.enum(["World", "Continent", "Region", "City", "Town", "Island", "Landmark"]),
     // Slug of the place this one sits inside, e.g. "caldrith".
     parent: z.string().optional(),
     description: z.string(),

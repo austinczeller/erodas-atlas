@@ -9,6 +9,8 @@ const COLLECTIONS = ["places", "gods", "history", "figures", "sky"];
 const EXTRA_PAGES = {
   "next adventure": "next-adventure/",
   calendar: "calendar/",
+  gods: "gods/",
+  "notable figures": "figures/",
   "the erodian standard calendar": "calendar/",
 };
 

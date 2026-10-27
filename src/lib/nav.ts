@@ -45,7 +45,7 @@ export async function getNav(): Promise<NavMenu[]> {
       href: `${base}/places/`,
       overview: "The map and gazetteer",
       groups: [
-        { heading: "Continents", links: placesOf("Continent") },
+        { heading: "Erodas and its continents", links: placesOf("World", "Continent") },
         { heading: "Regions of Korlornium", links: placesOf("Region") },
         { heading: "Cities, towns and isles", links: placesOf("City", "Town", "Island") },
         { heading: "Wild places", links: placesOf("Landmark") },

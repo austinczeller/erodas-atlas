@@ -1,12 +1,11 @@
 ---
 // Lets readers switch between the colour schemes in global.css.
-// The choice is remembered in this browser. Remove this component from
-// Base.astro once a single scheme has been chosen.
+// The choice is remembered in this browser. Heaven's Hole is the default.
 const themes = [
+  { id: "heavens-hole", label: "Heaven's Hole" },
   { id: "scar", label: "Scar Sea" },
   { id: "silverstone", label: "Silverstone" },
   { id: "redshield", label: "Redshield" },
-  { id: "heavens-hole", label: "Heaven's Hole" },
 ];
 ---
 
@@ -19,7 +18,7 @@ const themes = [
 
 <script>
   const select = document.getElementById("theme-picker") as HTMLSelectElement;
-  select.value = document.documentElement.dataset.theme ?? "scar";
+  select.value = document.documentElement.dataset.theme ?? "heavens-hole";
   select.addEventListener("change", () => {
     document.documentElement.dataset.theme = select.value;
     try {

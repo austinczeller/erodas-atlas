@@ -1,6 +1,6 @@
 /* The Erodian Atlas: colour schemes.
    Each scheme is a set of tokens with a light and a dark version. The page
-   picks one with <html data-theme="...">; "scar" is the default. */
+   picks one with <html data-theme="...">; "heavens-hole" is the default. */
 
 :root {
   --font: "Alegreya", Georgia, serif;
@@ -10,7 +10,9 @@
 }
 
 /* Scar Sea: the map's own sea teal, Silverstone white and label red. */
-:root,
+:root {
+  color-scheme: light;
+}
 [data-theme="scar"] {
   --mast-bg: #1d3a3e;
   --mast-fg: #f1f6f4;
@@ -54,7 +56,8 @@
   --rule: #d0cac3;
 }
 /* Heaven's Hole: moss, mist and a fey violet. */
-[data-theme="heavens-hole"] {
+[data-theme="heavens-hole"],
+:root:not([data-theme]) {
   --mast-bg: #1f3428;
   --mast-fg: #eef3ec;
   --mast-muted: #bfd0bd;
@@ -69,7 +72,6 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root,
   [data-theme="scar"] {
     --mast-bg: #10272a;
     --sea: #6f9e9a;
@@ -101,7 +103,8 @@
     --label-red: #f28d55;
     --rule: #3b332e;
   }
-  [data-theme="heavens-hole"] {
+  [data-theme="heavens-hole"],
+  :root:not([data-theme]) {
     --mast-bg: #0f1c14;
     --sea: #82b08e;
     --stone: #142019;
@@ -110,6 +113,9 @@
     --ink-soft: #a9b9a6;
     --label-red: #cba8f3;
     --rule: #2f4537;
+  }
+  :root {
+    color-scheme: dark;
   }
 }
 

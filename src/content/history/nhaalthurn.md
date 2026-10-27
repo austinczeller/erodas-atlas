@@ -2,12 +2,12 @@
 title: Nhaalthurn
 kind: Observance
 when: 80th of Salaale to 1st of Nhaale
-description: The Turning Breath. The oldest holiday in Korlornium, a silent evening and a morning of music.
+description: The Turning Breath. The oldest holiday in Erodas, a silent evening and a morning of music.
 order: 101
 date: { month: 4, day: 80 }
 endDate: { month: 1, day: 1 }
 ---
-[[Nhaalthurn]], the Turning Breath, is the oldest continuously observed holiday in [[Korlornium]], marking the passage from the final night of Salaale into the first dawn of Nhaale. It is both an ending and a beginning: a single breath held between the death of one year and the birth of the next.
+[[Nhaalthurn]], the Turning Breath, is the oldest continuously observed holiday in Erodas, marking the passage from the final night of Salaale into the first dawn of Nhaale. It is both an ending and a beginning: a single breath held between the death of one year and the birth of the next.
 
 ## The Quiet Evening
 
@@ -29,6 +29,6 @@ Families gather at dawn to hear the first notes, and it is customary to hum or s
 
 ## Origins
 
-The holiday predates recorded history in most of [[Korlornium]]. The oldest known reference appears in fragments of Yygarissil's scripture, describing the gods themselves going silent on the eve of the world's second breath. Whether this is literal theology or poetic tradition is debated.
+The holiday predates recorded history in most of Erodas. The oldest known reference appears in fragments of Yygarissil's scripture, describing the gods themselves going silent on the eve of the world's second breath. Whether this is literal theology or poetic tradition is debated.
 
 Some scholars argue [[Nhaalthurn]] originated among an older people who understood the calendar not as a human invention but as a living cycle: the world breathing in, holding, breathing out, and holding again. The holiday, in this view, marks the moment the world chooses to breathe in once more.
