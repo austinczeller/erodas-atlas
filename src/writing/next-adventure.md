@@ -17,7 +17,7 @@ Magic is the dividing line. The church teaches that all magic is the power of [[
 
 ## Notes on character creation
 
-The campaign uses the 2024 rules of Dungeons and Dragons. Any species from the Player's Handbook is welcome. Fowlmen and Star Touched Aasimar from [[Goghdor]] are rare in the city and will be noticed.
+The campaign uses the 2024 rules of Dungeons and Dragons. Any species from the Player's Handbook is welcome.
 
 ## Inspiration
 
