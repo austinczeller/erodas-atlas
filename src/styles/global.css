@@ -1,0 +1,164 @@
+/* The Erodian Atlas
+   Palette taken from the Korlornium map itself: its sea teal, the red of its
+   place labels, and the cool white of Dithoria's Silverstone. */
+
+:root {
+  --sea-deep: #1d3a3e;
+  --sea: #4b7a77;
+  --sea-pale: #d7e3e1;
+  --stone: #eef1f0;
+  --paper: #f9fbfa;
+  --ink: #1a2427;
+  --ink-soft: #4b585b;
+  --label-red: #a12f1c;
+  --rule: #c5d0ce;
+
+  --font: "Alegreya", Georgia, serif;
+  --font-sc: "Alegreya SC", "Alegreya", Georgia, serif;
+
+  --measure: 68ch;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sea-deep: #10272a;
+    --sea: #6f9e9a;
+    --sea-pale: #22393c;
+    --stone: #162a2d;
+    --paper: #1b3235;
+    --ink: #e4ebe9;
+    --ink-soft: #a9b8b6;
+    --label-red: #e27a63;
+    --rule: #34504f;
+    color-scheme: dark;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--stone);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 1.1875rem;
+  line-height: 1.62;
+  font-kerning: normal;
+  font-variant-numeric: oldstyle-nums proportional-nums;
+  text-rendering: optimizeLegibility;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--label-red);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+a:hover {
+  text-decoration-thickness: 2px;
+}
+:focus-visible {
+  outline: 2px solid var(--label-red);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-sc);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  margin: 0;
+  text-wrap: balance;
+}
+h1 {
+  font-size: clamp(2.4rem, 6vw, 3.6rem);
+  font-weight: 700;
+}
+h2 {
+  font-size: 1.7rem;
+  margin-top: 2.4em;
+  margin-bottom: 0.5em;
+}
+h3 {
+  font-size: 1.3rem;
+  margin-top: 1.8em;
+  margin-bottom: 0.4em;
+}
+
+p,
+ul,
+ol,
+blockquote {
+  margin: 0 0 1em;
+}
+
+blockquote {
+  margin-left: 0;
+  padding-left: 1.1em;
+  border-left: 2px solid var(--sea);
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 2.5em 0;
+}
+
+.skip {
+  position: absolute;
+  left: -999px;
+}
+.skip:focus {
+  left: 1rem;
+  top: 1rem;
+  z-index: 10;
+  background: var(--paper);
+  padding: 0.5em 1em;
+}
+
+/* Prose: long-form text from the atlas entries */
+.prose {
+  max-width: var(--measure);
+}
+.prose > :first-child {
+  margin-top: 0;
+}
+.prose ul {
+  padding-left: 1.2em;
+}
+.prose li {
+  margin-bottom: 0.35em;
+}
+.prose strong {
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

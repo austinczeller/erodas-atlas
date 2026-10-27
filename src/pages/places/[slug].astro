@@ -1,0 +1,166 @@
+---
+import { render } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import Locator from "../../components/Locator.astro";
+import { base, getPlaces, placeUrl, type Place } from "../../lib/content";
+
+export async function getStaticPaths() {
+  const places = await getPlaces();
+  return places.map((place) => ({ params: { slug: place.id }, props: { place, places } }));
+}
+
+interface Props {
+  place: Place;
+  places: Place[];
+}
+
+const { place, places } = Astro.props;
+const { Content } = await render(place);
+const d = place.data;
+
+// Walk up the parents to build the trail, e.g. Korlornium > Caldrith.
+const byId = new Map(places.map((p) => [p.id, p]));
+const trail: Place[] = [];
+for (let p = d.parent ? byId.get(d.parent) : undefined; p; p = p.data.parent ? byId.get(p.data.parent) : undefined) {
+  trail.unshift(p);
+}
+const within = places.filter((p) => p.data.parent === place.id);
+---
+
+<Base title={d.title} section="places" description={d.description}>
+  <article class="place">
+    <header class="head">
+      <p class="trail">
+        <a href={`${base}/places/`}>Places</a>
+        {
+          trail.map((p) => (
+            <>
+              {" / "}
+              <a href={placeUrl(p.id)}>{p.data.title}</a>
+            </>
+          ))
+        }
+      </p>
+      <h1>{d.title}</h1>
+      <p class="dek">{d.description}</p>
+    </header>
+
+    <div class="body">
+      <div class="prose">
+        <Content />
+      </div>
+
+      <aside class="facts" aria-label={`About ${d.title}`}>
+        {d.map && <Locator x={d.map.x} y={d.map.y} title={d.title} />}
+        {
+          d.image && (
+            <img class="plate" src={`${base}/images/${d.image}`} alt={d.imageAlt ?? ""} loading="lazy" />
+          )
+        }
+        <dl>
+          <div>
+            <dt>Kind</dt>
+            <dd>{d.kind}</dd>
+          </div>
+          {
+            trail.length > 0 && (
+              <div>
+                <dt>Part of</dt>
+                <dd>
+                  <a href={placeUrl(trail[trail.length - 1].id)}>{trail[trail.length - 1].data.title}</a>
+                </dd>
+              </div>
+            )
+          }
+          {
+            within.length > 0 && (
+              <div>
+                <dt>Places within</dt>
+                <dd>
+                  <ul>
+                    {within.map((p) => (
+                      <li>
+                        <a href={placeUrl(p.id)}>{p.data.title}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </dd>
+              </div>
+            )
+          }
+        </dl>
+      </aside>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .place {
+    max-width: 78rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 3.5rem) var(--gutter) 0;
+  }
+  .trail {
+    margin: 0 0 0.6rem;
+    font-size: 1rem;
+    color: var(--ink-soft);
+  }
+  .trail a {
+    color: inherit;
+  }
+  .dek {
+    max-width: var(--measure);
+    margin: 0.7rem 0 0;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.45;
+  }
+  .body {
+    margin-top: clamp(2rem, 4vw, 3rem);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 19rem;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+  }
+  .facts {
+    position: sticky;
+    top: 1.5rem;
+    display: grid;
+    gap: 1.2rem;
+  }
+  .plate {
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 0.25);
+  }
+  .facts dl {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.45;
+  }
+  .facts dl > div {
+    padding: 0.55rem 0;
+    border-top: 1px solid var(--rule);
+  }
+  .facts dt {
+    font-family: var(--font-sc);
+    color: var(--ink-soft);
+  }
+  .facts dd {
+    margin: 0;
+  }
+  .facts ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  @media (max-width: 56rem) {
+    .body {
+      grid-template-columns: 1fr;
+    }
+    .facts {
+      position: static;
+      max-width: 24rem;
+      grid-row: 1;
+    }
+  }
+</style>

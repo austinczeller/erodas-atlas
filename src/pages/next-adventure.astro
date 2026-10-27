@@ -1,0 +1,76 @@
+---
+import Base from "../layouts/Base.astro";
+import { Content } from "../writing/next-adventure.md";
+import Locator from "../components/Locator.astro";
+import { base } from "../lib/content";
+---
+
+<Base
+  title="Next Adventure"
+  section="next-adventure"
+  description="Character creation for the next campaign, which begins in Dithoria City."
+>
+  <article class="page">
+    <header class="head">
+      <h1>The next adventure</h1>
+      <p class="dek">A campaign in Dithoria City, where magic needs a permit and the faithful are starting to argue.</p>
+    </header>
+    <div class="body">
+      <div class="prose">
+        <Content />
+      </div>
+      <aside class="side" aria-label="Where it begins">
+        <Locator x={0.509} y={0.314} title="Dithoria City" zoom={5} />
+        <p>
+          The campaign begins in <a href={`${base}/places/dithoria-city/`}>Dithoria City</a>, on the
+          coast of the Scar in northern Caldrith.
+        </p>
+      </aside>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .page {
+    max-width: 78rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 3.5rem) var(--gutter) 0;
+  }
+  .dek {
+    max-width: var(--measure);
+    margin: 0.7rem 0 0;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.45;
+  }
+  .body {
+    margin-top: clamp(2rem, 4vw, 3rem);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 19rem;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+  }
+  .side {
+    position: sticky;
+    top: 1.5rem;
+    font-size: 1rem;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .side p {
+    margin-top: 0.8rem;
+  }
+  .prose :global(ol) {
+    padding-left: 1.4em;
+  }
+  @media (max-width: 56rem) {
+    .body {
+      grid-template-columns: 1fr;
+    }
+    .side {
+      position: static;
+      max-width: 24rem;
+    }
+  }
+</style>

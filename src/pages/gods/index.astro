@@ -1,0 +1,96 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getGods, godUrl } from "../../lib/content";
+
+const gods = await getGods();
+const groups = ["The Three Sisters", "The Major Powers", "Lesser Powers"] as const;
+---
+
+<Base title="Gods" section="gods" description="The Pantheon of Major Powers and the lesser powers of Erodas.">
+  <div class="page">
+    <header class="head">
+      <h1>Gods</h1>
+      <div class="prose dek">
+        <p>
+          The gods are known as immortal beings who work together to shape the Mundane World.
+          Together they are called the Pantheon of Major Powers, the group of divine powers of
+          current reign over the Mundane World and Erodas.
+        </p>
+        <p>
+          Yygarissil is the common name for the place the gods ascend to. It is unknown whether
+          this place exists in a parallel plane or outside of Erodas. It is believed that as the
+          gods travel to different locations within Yygarissil, it creates natural phenomena which
+          ripple onto Erodas.
+        </p>
+      </div>
+    </header>
+
+    {
+      groups.map((group) => {
+        const members = gods.filter((g) => g.data.group === group);
+        if (members.length === 0) return null;
+        return (
+          <section class="group">
+            <h2>{group}</h2>
+            <ul class="roll">
+              {members.map((g) => (
+                <li>
+                  <a href={godUrl(g.id)}>{g.data.title}</a>
+                  <span class="domain">{g.data.domain}</span>
+                  {g.data.symbol && <span class="symbol">{g.data.symbol}</span>}
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+      })
+    }
+  </div>
+</Base>
+
+<style>
+  .page {
+    max-width: 78rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 3.5rem) var(--gutter) 0;
+  }
+  .dek {
+    margin-top: 1rem;
+    color: var(--ink-soft);
+  }
+  .roll {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .roll li {
+    display: grid;
+    grid-template-columns: minmax(10rem, 16rem) minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.2rem 2rem;
+    align-items: baseline;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .roll a {
+    font-family: var(--font-sc);
+    font-size: 1.45rem;
+    text-decoration: none;
+  }
+  .roll a:hover {
+    text-decoration: underline;
+  }
+  .domain {
+    font-size: 1.1rem;
+  }
+  .symbol {
+    color: var(--ink-soft);
+    font-style: italic;
+    font-size: 1rem;
+  }
+  @media (max-width: 44rem) {
+    .roll li {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,11 +1,8 @@
-name: Deploy Erodas Atlas
+name: Deploy the Erodian Atlas
 
 on:
   push:
     branches: [main]
-  schedule:
-    # Rebuild every 6 hours to pick up vault changes
-    - cron: "0 */6 * * *"
   workflow_dispatch:
 
 permissions:
@@ -21,45 +18,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout erodas-atlas
-        uses: actions/checkout@v4
-
-      - name: Clone Korlornium vault
-        run: git clone --depth 1 https://github.com/austinczeller/Korlornium.git vault
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install Python deps
-        run: pip install pyyaml
-
-      - name: Sync vault content to src/content/docs
-        run: python scripts/sync-vault.py --vault vault --output src/content/docs --image-output public/vault-images --base-url /erodas-atlas
-
-      - name: Copy map image into static dir
-        run: cp vault/z_Assests/Images/Korlornium.png public/static/map/Korlornium.png
-
-      - name: Copy Calendarium data to static
-        run: |
-          mkdir -p public/static/calendar
-          cp vault/.obsidian/plugins/calendarium/data.json public/static/calendar/calendarium.json
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-
-      - name: Install npm dependencies
-        run: npm install
-
-      - name: Build site
-        run: npm run build
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
@@ -70,6 +36,5 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4

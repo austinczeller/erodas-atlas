@@ -1,0 +1,99 @@
+---
+// The Korlornium map with a pin for every place that has a position.
+interface Pin {
+  title: string;
+  href: string;
+  x: number;
+  y: number;
+}
+interface Props {
+  pins?: Pin[];
+  caption?: string;
+}
+
+const { pins = [], caption } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<figure class="atlas">
+  <div class="sheet">
+    <img
+      src={`${base}/images/korlornium-map.webp`}
+      width="1920"
+      height="1080"
+      alt="Map of Korlornium. Caldrith lies to the west, Siroth to the east, and The Scar sea between them."
+    />
+    {
+      pins.map((pin) => (
+        <a
+          class="pin"
+          href={pin.href}
+          style={`left:${(pin.x * 100).toFixed(2)}%;top:${(pin.y * 100).toFixed(2)}%`}
+        >
+          <span class="label">{pin.title}</span>
+        </a>
+      ))
+    }
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .atlas {
+    margin: 0;
+  }
+  .sheet {
+    position: relative;
+    line-height: 0;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 0.25);
+  }
+  .pin {
+    position: absolute;
+    width: 1.4rem;
+    height: 1.4rem;
+    margin: -0.7rem 0 0 -0.7rem;
+    border-radius: 50%;
+    line-height: 1;
+    text-decoration: none;
+  }
+  .pin::before {
+    content: "";
+    position: absolute;
+    inset: 0.32rem;
+    border-radius: 50%;
+    background: #f6efe0;
+    border: 2px solid #8e2414;
+    box-shadow: 0 0 0 2px rgb(255 255 255 / 0.45);
+  }
+  .pin:hover::before,
+  .pin:focus-visible::before {
+    background: #8e2414;
+  }
+  .label {
+    position: absolute;
+    left: 50%;
+    bottom: 120%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    padding: 0.25em 0.6em 0.3em;
+    background: #f6f8f7;
+    color: #1a2427;
+    font-family: var(--font-sc);
+    font-size: 1rem;
+    border: 1px solid #8e2414;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 120ms ease;
+  }
+  .pin:hover .label,
+  .pin:focus-visible .label {
+    opacity: 1;
+  }
+  figcaption {
+    margin-top: 0.7rem;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+</style>

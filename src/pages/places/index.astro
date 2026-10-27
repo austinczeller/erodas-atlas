@@ -1,0 +1,110 @@
+---
+import Base from "../../layouts/Base.astro";
+import AtlasMap from "../../components/AtlasMap.astro";
+import { getPlaces, mapPins, placeUrl } from "../../lib/content";
+
+const places = await getPlaces();
+const pins = mapPins(places);
+
+const groups = [
+  {
+    title: "The continents of Erodas",
+    note: "Korlornium is only one of the lands of Erodas. Little is known in Korlornium of the others.",
+    items: places.filter((p) => p.data.kind === "Continent"),
+  },
+  {
+    title: "Regions of Korlornium",
+    items: places.filter((p) => p.data.kind === "Region"),
+  },
+  {
+    title: "Cities, towns and isles",
+    items: places.filter((p) => ["City", "Town", "Island"].includes(p.data.kind)),
+  },
+  {
+    title: "Wild places and landmarks",
+    items: places.filter((p) => p.data.kind === "Landmark"),
+  },
+];
+---
+
+<Base title="Places" section="places" description="The continents of Erodas and the places of Korlornium.">
+  <div class="page">
+    <header class="head">
+      <h1>Places</h1>
+      <p class="dek">
+        Select a marker on the map, or browse the gazetteer below. The map is a work in progress
+        and may change as new lands are charted.
+      </p>
+    </header>
+
+    <AtlasMap pins={pins} caption="Korlornium, as charted by the Erodian Atlasing Society." />
+
+    {
+      groups.map((group) => (
+        <section class="group">
+          <h2>{group.title}</h2>
+          {group.note && <p class="note">{group.note}</p>}
+          <dl class="gazetteer">
+            {group.items.map((p) => (
+              <div>
+                <dt>
+                  <a href={placeUrl(p.id)}>{p.data.title}</a>
+                </dt>
+                <dd>{p.data.description}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      ))
+    }
+  </div>
+</Base>
+
+<style>
+  .page {
+    max-width: 78rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 3.5rem) var(--gutter) 0;
+  }
+  .head {
+    margin-bottom: 2rem;
+  }
+  .dek {
+    max-width: var(--measure);
+    color: var(--ink-soft);
+    margin: 0.6rem 0 0;
+  }
+  .group h2 {
+    margin-top: 2.2em;
+  }
+  .note {
+    max-width: var(--measure);
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .gazetteer {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    column-gap: 3rem;
+    border-top: 1px solid var(--rule);
+  }
+  .gazetteer > div {
+    padding: 0.8rem 0 0.9rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .gazetteer dt a {
+    font-family: var(--font-sc);
+    font-size: 1.3rem;
+    text-decoration: none;
+  }
+  .gazetteer dt a:hover {
+    text-decoration: underline;
+  }
+  .gazetteer dd {
+    margin: 0.1rem 0 0;
+    color: var(--ink-soft);
+    font-size: 1rem;
+    line-height: 1.45;
+  }
+</style>

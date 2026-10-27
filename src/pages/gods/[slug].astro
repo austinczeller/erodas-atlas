@@ -1,0 +1,70 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import { base, getGods } from "../../lib/content";
+
+export async function getStaticPaths() {
+  const gods = await getGods();
+  return gods.map((god) => ({ params: { slug: god.id }, props: { god } }));
+}
+
+const { god } = Astro.props as { god: CollectionEntry<"gods"> };
+const { Content } = await render(god);
+const d = god.data;
+---
+
+<Base title={d.title} section="gods" description={`${d.title}, ${d.domain.toLowerCase()}.`}>
+  <article class="god">
+    <header class="head">
+      <p class="trail"><a href={`${base}/gods/`}>Gods</a> / {d.group}</p>
+      <h1>{d.title}</h1>
+      <dl class="attrs">
+        <div><dt>Domain</dt><dd>{d.domain}</dd></div>
+        {d.symbol && <div><dt>Symbol</dt><dd>{d.symbol}</dd></div>}
+      </dl>
+      {d.quote && <blockquote class="quote">{d.quote}</blockquote>}
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</Base>
+
+<style>
+  .god {
+    max-width: 78rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 3.5rem) var(--gutter) 0;
+  }
+  .trail {
+    margin: 0 0 0.6rem;
+    font-size: 1rem;
+    color: var(--ink-soft);
+  }
+  .trail a {
+    color: inherit;
+  }
+  .attrs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 3rem;
+    margin: 1rem 0 0;
+  }
+  .attrs dt {
+    font-family: var(--font-sc);
+    color: var(--ink-soft);
+    font-size: 1rem;
+  }
+  .attrs dd {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+  .quote {
+    margin: 1.6rem 0 0;
+    font-size: 1.35rem;
+    max-width: var(--measure);
+  }
+  .prose {
+    margin-top: 2.5rem;
+  }
+</style>

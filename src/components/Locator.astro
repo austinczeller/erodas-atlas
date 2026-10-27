@@ -1,0 +1,54 @@
+---
+// A zoomed-in square of the Korlornium map centred on one place.
+interface Props {
+  x: number;
+  y: number;
+  title: string;
+  zoom?: number;
+}
+
+const { x, y, title, zoom = 4 } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+// The map is 16:9 and the frame is square, so the image is scaled to the
+// frame's height times the zoom. Work out how far to slide the image so the
+// place sits in the middle, then clamp so we never slide off the map's edge.
+const aspect = 1920 / 1080;
+const w = zoom * aspect; // image width, in frame widths
+const h = zoom; // image height, in frame heights
+const clamp = (v: number) => Math.min(1, Math.max(0, v));
+const px = clamp((x * w - 0.5) / (w - 1));
+const py = clamp((y * h - 0.5) / (h - 1));
+// Where the place ends up inside the frame once the slide is clamped.
+const markX = x * w - px * (w - 1);
+const markY = y * h - py * (h - 1);
+---
+
+<div
+  class="locator"
+  role="img"
+  aria-label={`Detail of the Korlornium map around ${title}`}
+  style={`background-image:url(${base}/images/korlornium-map.webp);background-size:${(w * 100).toFixed(1)}% ${(h * 100).toFixed(1)}%;background-position:${(px * 100).toFixed(2)}% ${(py * 100).toFixed(2)}%`}
+>
+  <span class="mark" style={`left:${(markX * 100).toFixed(2)}%;top:${(markY * 100).toFixed(2)}%`}></span>
+</div>
+
+<style>
+  .locator {
+    position: relative;
+    aspect-ratio: 1;
+    background-repeat: no-repeat;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 0.3);
+  }
+  .mark {
+    position: absolute;
+    width: 2.6rem;
+    height: 2.6rem;
+    margin: -1.3rem 0 0 -1.3rem;
+    border: 2px solid #8e2414;
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 2px rgb(255 255 255 / 0.6),
+      inset 0 0 0 2px rgb(255 255 255 / 0.6);
+  }
+</style>

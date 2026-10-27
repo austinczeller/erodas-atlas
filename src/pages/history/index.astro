@@ -1,0 +1,129 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getHistory, historyUrl } from "../../lib/content";
+
+const entries = await getHistory();
+const timeline = entries.filter((e) => e.data.kind !== "Observance");
+const observances = entries.filter((e) => e.data.kind === "Observance");
+---
+
+<Base title="History" section="history" description="The history of Korlornium as it is recorded in Caldrith.">
+  <div class="page">
+    <header class="head">
+      <h1>History</h1>
+      <div class="prose dek">
+        <p>
+          It is 2000 years since the Great Wave, the events which created the Scar. Prior to the
+          Great Wave much of Korlornium's people lived in the central lowlands of the continent,
+          so much of the written record was lost. What follows is the history of Korlornium as it
+          is kept in the libraries and temples of Caldrith.
+        </p>
+      </div>
+    </header>
+
+    <section>
+      <h2>Timeline</h2>
+      <ol class="timeline">
+        {
+          timeline.map((e) => (
+            <li>
+              <span class="when">{e.data.when}</span>
+              <div>
+                <a href={historyUrl(e.id)}>{e.data.title}</a>
+                <p>{e.data.description}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section>
+      <h2>Holidays and observances</h2>
+      <p class="note">
+        Korlornium observes the Erodian Standard Calendar. A year has four months of 80 days:
+        Nhaale in spring, Htaale in summer, Xhaale in autumn and Salaale in winter.
+      </p>
+      <ol class="timeline">
+        {
+          observances.map((e) => (
+            <li>
+              <span class="when">{e.data.when}</span>
+              <div>
+                <a href={historyUrl(e.id)}>{e.data.title}</a>
+                <p>{e.data.description}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .page {
+    max-width: 78rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 3.5rem) var(--gutter) 0;
+  }
+  .dek {
+    margin-top: 1rem;
+    color: var(--ink-soft);
+  }
+  .note {
+    max-width: var(--measure);
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: 60rem;
+    border-left: 2px solid var(--sea);
+  }
+  .timeline li {
+    position: relative;
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 0.2rem 1.5rem;
+    padding: 0.9rem 0 1rem 1.5rem;
+  }
+  .timeline li::before {
+    content: "";
+    position: absolute;
+    left: -0.45rem;
+    top: 1.45rem;
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    background: var(--stone);
+    border: 2px solid var(--label-red);
+  }
+  .when {
+    font-family: var(--font-sc);
+    color: var(--ink-soft);
+    padding-top: 0.3rem;
+  }
+  .timeline a {
+    font-family: var(--font-sc);
+    font-size: 1.4rem;
+    text-decoration: none;
+  }
+  .timeline a:hover {
+    text-decoration: underline;
+  }
+  .timeline p {
+    margin: 0.15rem 0 0;
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+    line-height: 1.5;
+    max-width: 52ch;
+  }
+  @media (max-width: 44rem) {
+    .timeline li {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
