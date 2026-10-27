@@ -1,0 +1,46 @@
+---
+// Lets readers switch between the colour schemes in global.css.
+// The choice is remembered in this browser. Remove this component from
+// Base.astro once a single scheme has been chosen.
+const themes = [
+  { id: "scar", label: "Scar Sea" },
+  { id: "silverstone", label: "Silverstone" },
+  { id: "redshield", label: "Redshield" },
+  { id: "heavens-hole", label: "Heaven's Hole" },
+];
+---
+
+<label class="picker">
+  Colour scheme
+  <select id="theme-picker">
+    {themes.map((t) => <option value={t.id}>{t.label}</option>)}
+  </select>
+</label>
+
+<script>
+  const select = document.getElementById("theme-picker") as HTMLSelectElement;
+  select.value = document.documentElement.dataset.theme ?? "scar";
+  select.addEventListener("change", () => {
+    document.documentElement.dataset.theme = select.value;
+    try {
+      localStorage.setItem("atlas-theme", select.value);
+    } catch {}
+  });
+</script>
+
+<style>
+  .picker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-sc);
+  }
+  select {
+    font: inherit;
+    font-family: var(--font);
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 0.25rem 0.5rem;
+  }
+</style>

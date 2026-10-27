@@ -5,8 +5,12 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const COLLECTIONS = ["places", "gods", "history"];
-const EXTRA_PAGES = { "next adventure": "next-adventure/" };
+const COLLECTIONS = ["places", "gods", "history", "figures", "sky"];
+const EXTRA_PAGES = {
+  "next adventure": "next-adventure/",
+  calendar: "calendar/",
+  "the erodian standard calendar": "calendar/",
+};
 
 function readFrontmatter(file) {
   const text = fs.readFileSync(file, "utf8");

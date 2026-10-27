@@ -4,6 +4,8 @@ kind: Observance
 when: 80th of Salaale to 1st of Nhaale
 description: The Turning Breath. The oldest holiday in Korlornium, a silent evening and a morning of music.
 order: 101
+date: { month: 4, day: 80 }
+endDate: { month: 1, day: 1 }
 ---
 [[Nhaalthurn]], the Turning Breath, is the oldest continuously observed holiday in [[Korlornium]], marking the passage from the final night of Salaale into the first dawn of Nhaale. It is both an ending and a beginning: a single breath held between the death of one year and the birth of the next.
 

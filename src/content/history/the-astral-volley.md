@@ -4,6 +4,8 @@ kind: Observance
 when: 10th to 12th of Htaale
 description: A three-night meteor shower each summer. Somewhere up there, someone is shooting.
 order: 102
+date: { month: 2, day: 10 }
+endDate: { month: 2, day: 12 }
 ---
 On the tenth night of Htaale, the sky fills with light: streaks of silver and gold arcing across the dark in their hundreds. Somewhere up there, someone is shooting.
 

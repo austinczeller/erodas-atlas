@@ -51,7 +51,7 @@ const within = places.filter((p) => p.data.parent === place.id);
       </div>
 
       <aside class="facts" aria-label={`About ${d.title}`}>
-        {d.map && <Locator x={d.map.x} y={d.map.y} title={d.title} />}
+        {d.map && <Locator x={d.map.x} y={d.map.y} title={d.title} zoom={d.mapZoom} />}
         {
           d.image && (
             <img class="plate" src={`${base}/images/${d.image}`} alt={d.imageAlt ?? ""} loading="lazy" />

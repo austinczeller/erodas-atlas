@@ -1,0 +1,134 @@
+---
+import Base from "../../layouts/Base.astro";
+import MoonGlyph from "../../components/MoonGlyph.astro";
+import { base, getSky, historyUrl, skyUrl } from "../../lib/content";
+import { dayNumber, moonPosition, moons, phaseName, today } from "../../data/calendar";
+
+const sky = await getSky();
+const todayN = dayNumber(today.year, today.month, today.day);
+const moonData = new Map(moons.map((m) => [m.id, m]));
+---
+
+<Base title="Calendar and Sky" section="sky" description="The moons, stars and calendar of Erodas.">
+  <div class="page">
+    <header class="head">
+      <h1>The skies of Erodas</h1>
+      <div class="prose dek">
+        <p>
+          Erodas has two moons, but typically only Têthra is visible at night. Pêpra, the yellow
+          moon, is often concealed behind the large white moon of Têthra. Time in Korlornium is
+          kept by the <a href={`${base}/calendar/`}>Erodian Standard Calendar</a>.
+        </p>
+      </div>
+    </header>
+
+    <section>
+      <h2>The moons</h2>
+      <ul class="bodies">
+        {
+          sky
+            .filter((s) => s.data.kind === "Moon")
+            .map((s) => {
+              const moon = moonData.get(s.id);
+              const pos = moon ? moonPosition(moon, todayN) : 0.5;
+              return (
+                <li>
+                  <MoonGlyph position={pos} face={moon?.face ?? "#eee"} size={56} />
+                  <div>
+                    <a href={skyUrl(s.id)}>{s.data.title}</a>
+                    <p>{s.data.description}</p>
+                    <p class="meta">
+                      A cycle of {s.data.cycle}. {moon && <>Tonight: {phaseName(pos).toLowerCase()}.</>}
+                    </p>
+                  </div>
+                </li>
+              );
+            })
+        }
+      </ul>
+    </section>
+
+    <section>
+      <h2>The stars</h2>
+      <ul class="plain">
+        {
+          sky
+            .filter((s) => s.data.kind === "Constellation")
+            .map((s) => (
+              <li>
+                <a href={skyUrl(s.id)}>{s.data.title}</a>
+                <p>{s.data.description}</p>
+              </li>
+            ))
+        }
+        <li>
+          <a href={`${base}/places/goghdor/`}>The constellations of Goghdor</a>
+          <p>To the Star Touched, the constellations are the architecture of fate and the source of their Skoldrún.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>In the sky</h2>
+      <ul class="plain">
+        <li>
+          <a href={historyUrl("the-astral-volley")}>The Astral Volley</a>
+          <p>A three-night meteor shower each summer, beginning on the 10th of Htaale.</p>
+        </li>
+        <li>
+          <a href={historyUrl("spectral-aurora")}>Spectral Aurora</a>
+          <p>Lights in the northern sky, said to be Sibuna shepherding the dead into the beyond.</p>
+        </li>
+      </ul>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .page {
+    max-width: 78rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 3.5rem) var(--gutter) 0;
+  }
+  .dek {
+    margin-top: 1rem;
+    color: var(--ink-soft);
+  }
+  .bodies,
+  .plain {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: 52rem;
+    border-top: 1px solid var(--rule);
+  }
+  .bodies li {
+    display: flex;
+    gap: 1.4rem;
+    align-items: flex-start;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .plain li {
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  li > a,
+  li div > a {
+    font-family: var(--font-sc);
+    font-size: 1.4rem;
+    text-decoration: none;
+  }
+  li a:hover {
+    text-decoration: underline;
+  }
+  li p {
+    margin: 0.15rem 0 0;
+    color: var(--ink-soft);
+    font-size: 1.04rem;
+    line-height: 1.5;
+  }
+  .meta {
+    font-style: italic;
+  }
+</style>

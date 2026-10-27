@@ -4,6 +4,7 @@ kind: City
 parent: caldrith
 description: The largest city in Korlornium. A gleaming bastion of law, order and Silverstone, named after the god Dithoria.
 map: { x: 0.509, y: 0.314 }
+mapZoom: 2.2
 order: 20
 ---
 [[Dithoria City]], named after the god of law and order, [[Dithoria]], stands as a gleaming bastion of civilization and structure amidst a chaotic world. It is the largest city in [[Korlornium]] and boasts military might across [[Caldrith]]. It was said to be blessed and protected by [[Dithoria]] during the cataclysmic event that created [[The Scar]]. While much of the surrounding land was torn asunder, the city's Silverstone walls remained unscathed, its people sheltered by the divine will of their patron god.
@@ -85,8 +86,6 @@ The Righteous Banner is the military brigade rallied during [[The Divergent War]
 The people of [[Dithoria City]] are known for their discipline, adherence to laws, and pride in their heritage. They believe their survival from [[The Great Wave]] was not merely good fortune, but a testament to their faith and righteousness. As such, the city's governance is steeped in religious tradition, with most legal matters presided over by priests of [[Dithoria]].
 
 At [[Nhaalthurn]], the silence of the Quiet Evening is largely ceremonial and frequently broken. The upper classes host wordless dinner parties, communicating through written notes and dramatic gestures, and the morning celebration involves hired orchestras. During [[The Astral Volley]], the city's scholars record the shower in precise detail each year and maintain archives going back centuries.
-
-There have been rumors of secret underground temples and places of worship to [[The Queen of Ravens]] in the holy city, as people need comfort in the trying times.
 
 ## Relations with the outside world
 

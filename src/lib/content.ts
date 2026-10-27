@@ -29,3 +29,14 @@ export function mapPins(places: Place[]) {
     .filter((p) => p.data.map)
     .map((p) => ({ title: p.data.title, href: placeUrl(p.id), x: p.data.map!.x, y: p.data.map!.y }));
 }
+
+export const figureUrl = (id: string) => `${base}/figures/${id}/`;
+export const skyUrl = (id: string) => `${base}/sky/${id}/`;
+
+export async function getFigures() {
+  return (await getCollection("figures")).sort(byOrder);
+}
+
+export async function getSky() {
+  return (await getCollection("sky")).sort(byOrder);
+}

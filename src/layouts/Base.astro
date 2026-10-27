@@ -1,22 +1,18 @@
 ---
 import "../styles/global.css";
+import SiteHeader from "../components/SiteHeader.astro";
+import ThemePicker from "../components/ThemePicker.astro";
 
 interface Props {
   title?: string;
   description?: string;
-  section?: "places" | "gods" | "history" | "next-adventure";
+  // Which header menu to mark as current.
+  section?: string;
 }
 
 const { title, description, section } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const pageTitle = title ? `${title} · The Erodian Atlas` : "The Erodian Atlas";
-
-const tabs = [
-  { id: "places", label: "Places", href: `${base}/places/` },
-  { id: "gods", label: "Gods", href: `${base}/gods/` },
-  { id: "history", label: "History", href: `${base}/history/` },
-  { id: "next-adventure", label: "Next Adventure", href: `${base}/next-adventure/` },
-];
 ---
 
 <!doctype html>
@@ -27,6 +23,15 @@ const tabs = [
     <title>{pageTitle}</title>
     {description && <meta name="description" content={description} />}
     <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />
+    <script is:inline>
+      // Apply the chosen colour scheme before the page paints.
+      try {
+        const fromUrl = new URLSearchParams(location.search).get("theme");
+        if (fromUrl) localStorage.setItem("atlas-theme", fromUrl);
+        const theme = localStorage.getItem("atlas-theme");
+        if (theme) document.documentElement.dataset.theme = theme;
+      } catch {}
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -36,24 +41,7 @@ const tabs = [
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
-    <header class="masthead">
-      <div class="masthead-inner">
-        <a class="wordmark" href={`${base}/`}>The Erodian Atlas</a>
-        <nav aria-label="Atlas sections">
-          <ul>
-            {
-              tabs.map((tab) => (
-                <li>
-                  <a href={tab.href} aria-current={section === tab.id ? "page" : undefined}>
-                    {tab.label}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </nav>
-      </div>
-    </header>
+    <SiteHeader section={section} />
     <main id="main">
       <slot />
     </main>
@@ -62,56 +50,12 @@ const tabs = [
         Compiled by the Erodian Atlasing Society. Our texts are updated whenever new historical
         accounts come to light.
       </p>
+      <ThemePicker />
     </footer>
   </body>
 </html>
 
 <style>
-  .masthead {
-    background: var(--sea-deep);
-    color: #eef4f2;
-  }
-  .masthead-inner {
-    max-width: 78rem;
-    margin: 0 auto;
-    padding: 0.9rem var(--gutter);
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.5rem 2rem;
-  }
-  .wordmark {
-    font-family: var(--font-sc);
-    font-weight: 700;
-    font-size: 1.45rem;
-    color: inherit;
-    text-decoration: none;
-    letter-spacing: 0.02em;
-  }
-  nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem 1.6rem;
-  }
-  nav a {
-    font-family: var(--font-sc);
-    font-size: 1.08rem;
-    color: #cfe0dc;
-    text-decoration: none;
-    padding: 0.2em 0;
-    border-bottom: 2px solid transparent;
-  }
-  nav a:hover {
-    color: #fff;
-  }
-  nav a[aria-current="page"] {
-    color: #fff;
-    border-bottom-color: #e07a62;
-  }
   main {
     min-height: 70vh;
   }
@@ -122,10 +66,14 @@ const tabs = [
     border-top: 1px solid var(--rule);
     color: var(--ink-soft);
     font-size: 0.95rem;
-    font-style: italic;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem 2rem;
   }
   .colophon p {
     margin: 0;
     max-width: var(--measure);
+    font-style: italic;
   }
 </style>

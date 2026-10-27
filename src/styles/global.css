@@ -1,31 +1,78 @@
-/* The Erodian Atlas
-   Palette taken from the Korlornium map itself: its sea teal, the red of its
-   place labels, and the cool white of Dithoria's Silverstone. */
+/* The Erodian Atlas: colour schemes.
+   Each scheme is a set of tokens with a light and a dark version. The page
+   picks one with <html data-theme="...">; "scar" is the default. */
 
 :root {
-  --sea-deep: #1d3a3e;
+  --font: "Alegreya", Georgia, serif;
+  --font-sc: "Alegreya SC", "Alegreya", Georgia, serif;
+  --measure: 68ch;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+}
+
+/* Scar Sea: the map's own sea teal, Silverstone white and label red. */
+:root,
+[data-theme="scar"] {
+  --mast-bg: #1d3a3e;
+  --mast-fg: #f1f6f4;
+  --mast-muted: #b9d0cb;
+  --mast-accent: #e07a62;
   --sea: #4b7a77;
-  --sea-pale: #d7e3e1;
   --stone: #eef1f0;
   --paper: #f9fbfa;
   --ink: #1a2427;
   --ink-soft: #4b585b;
   --label-red: #a12f1c;
   --rule: #c5d0ce;
-
-  --font: "Alegreya", Georgia, serif;
-  --font-sc: "Alegreya SC", "Alegreya", Georgia, serif;
-
-  --measure: 68ch;
-  --gutter: clamp(1rem, 4vw, 2.5rem);
   color-scheme: light;
+}
+/* Silverstone: the church's white and gold, with a deep night blue. */
+[data-theme="silverstone"] {
+  --mast-bg: #222b3d;
+  --mast-fg: #f4f2ea;
+  --mast-muted: #c3c8d4;
+  --mast-accent: #dcb75e;
+  --sea: #3d5175;
+  --stone: #f2f3f5;
+  --paper: #ffffff;
+  --ink: #1b2232;
+  --ink-soft: #545e70;
+  --label-red: #7d5d10;
+  --rule: #d4d8df;
+}
+/* Redshield: basalt, ash and the glow of the volcano. */
+[data-theme="redshield"] {
+  --mast-bg: #2a2320;
+  --mast-fg: #f3ece5;
+  --mast-muted: #c9b9ad;
+  --mast-accent: #f08a4b;
+  --sea: #6d5a4f;
+  --stone: #ebe9e5;
+  --paper: #f7f5f2;
+  --ink: #221e1c;
+  --ink-soft: #5c5450;
+  --label-red: #ad3510;
+  --rule: #d0cac3;
+}
+/* Heaven's Hole: moss, mist and a fey violet. */
+[data-theme="heavens-hole"] {
+  --mast-bg: #1f3428;
+  --mast-fg: #eef3ec;
+  --mast-muted: #bfd0bd;
+  --mast-accent: #c7a4f0;
+  --sea: #3f6b4a;
+  --stone: #eef0ea;
+  --paper: #f8faf6;
+  --ink: #1e2a22;
+  --ink-soft: #52604f;
+  --label-red: #6a3e9e;
+  --rule: #cdd5c6;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --sea-deep: #10272a;
+  :root,
+  [data-theme="scar"] {
+    --mast-bg: #10272a;
     --sea: #6f9e9a;
-    --sea-pale: #22393c;
     --stone: #162a2d;
     --paper: #1b3235;
     --ink: #e4ebe9;
@@ -33,6 +80,36 @@
     --label-red: #e27a63;
     --rule: #34504f;
     color-scheme: dark;
+  }
+  [data-theme="silverstone"] {
+    --mast-bg: #0f1420;
+    --sea: #8299c4;
+    --stone: #161c29;
+    --paper: #1d2433;
+    --ink: #e9ecf2;
+    --ink-soft: #a8b0c0;
+    --label-red: #e2c06e;
+    --rule: #2f3849;
+  }
+  [data-theme="redshield"] {
+    --mast-bg: #130f0d;
+    --sea: #b09a8c;
+    --stone: #1b1715;
+    --paper: #241f1c;
+    --ink: #eee7e0;
+    --ink-soft: #b5a99f;
+    --label-red: #f28d55;
+    --rule: #3b332e;
+  }
+  [data-theme="heavens-hole"] {
+    --mast-bg: #0f1c14;
+    --sea: #82b08e;
+    --stone: #142019;
+    --paper: #1b2a21;
+    --ink: #e4ece2;
+    --ink-soft: #a9b9a6;
+    --label-red: #cba8f3;
+    --rule: #2f4537;
   }
 }
 

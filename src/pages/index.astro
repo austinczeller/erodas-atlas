@@ -12,14 +12,24 @@ const sections = [
     text: "The continents of Erodas, and the regions, cities and wild places of Korlornium.",
   },
   {
+    href: `${base}/figures/`,
+    title: "Notable Figures",
+    text: "The founders, rulers, champions and captains whose names are known across Korlornium.",
+  },
+  {
     href: `${base}/gods/`,
     title: "Gods",
-    text: "The Pantheon of Major Powers, and the lesser powers who are worshipped beside them.",
+    text: "The Pantheon of Major Powers who shape the Mundane World.",
   },
   {
     href: `${base}/history/`,
     title: "History",
-    text: "From the Great Wave to the present day, as it is recorded in Caldrith. Also the holidays and observances of the year.",
+    text: "From the Great Wave to the Divergent War, as it is recorded in Caldrith. Also the holidays and observances of the year.",
+  },
+  {
+    href: `${base}/sky/`,
+    title: "Calendar and Sky",
+    text: "The Erodian Standard Calendar, today's date, and the moons and stars of Erodas.",
   },
   {
     href: `${base}/next-adventure/`,
@@ -67,7 +77,7 @@ const sections = [
 
 <style>
   .hero {
-    background: var(--sea-deep);
+    background: var(--mast-bg);
     padding: 0 var(--gutter) clamp(1.5rem, 4vw, 3rem);
   }
   .hero-inner {

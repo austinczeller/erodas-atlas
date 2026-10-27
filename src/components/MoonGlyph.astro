@@ -1,0 +1,48 @@
+---
+// A small drawing of a moon at a point in its cycle (0 new, 0.5 full).
+interface Props {
+  position: number;
+  face: string;
+  size?: number;
+  label?: string;
+}
+
+const { position, face, size = 18, label } = Astro.props;
+
+// The lit part is bounded by the outer edge on one side and an ellipse (the
+// terminator) whose width follows the phase.
+const r = 10;
+const waxing = position < 0.5;
+const lit = waxing ? position * 2 : (1 - position) * 2; // 0 dark .. 1 full
+const tx = Math.abs(1 - 2 * lit) * r; // terminator half-width
+const sweepOuter = waxing ? 1 : 0;
+// Crescents bulge toward the lit edge, gibbous moons away from it.
+const sweepInner = lit > 0.5 === waxing ? 1 : 0;
+const d =
+  lit < 0.01
+    ? ""
+    : lit > 0.99
+      ? `M 10 0 A ${r} ${r} 0 1 1 10 20 A ${r} ${r} 0 1 1 10 0 Z`
+      : `M 10 0 A ${r} ${r} 0 0 ${sweepOuter} 10 20 A ${tx.toFixed(2)} ${r} 0 0 ${sweepInner} 10 0 Z`;
+---
+
+<svg
+  class="moon"
+  width={size}
+  height={size}
+  viewBox="-1 -1 22 22"
+  role={label ? "img" : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : "true"}
+>
+  <circle cx="10" cy="10" r="10" fill="#2b3046" stroke="currentColor" stroke-opacity="0.35" stroke-width="1"></circle>
+  {d && <path d={d} fill={face}></path>}
+</svg>
+
+<style>
+  .moon {
+    display: inline-block;
+    vertical-align: middle;
+    flex: none;
+  }
+</style>

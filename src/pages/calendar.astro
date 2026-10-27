@@ -1,0 +1,320 @@
+---
+import Base from "../layouts/Base.astro";
+import MoonGlyph from "../components/MoonGlyph.astro";
+import { getHistory, historyUrl } from "../lib/content";
+import {
+  DAYS_IN_MONTH,
+  dayNumber,
+  fantasyCalendarUrl,
+  months,
+  moonPosition,
+  moons,
+  ordinal,
+  phaseName,
+  principalPhase,
+  seasonalDays,
+  today,
+  weekdayOf,
+  weekdays,
+} from "../data/calendar";
+
+// Holidays come from the History tab's observances that have a date.
+const observances = (await getHistory()).filter((e) => e.data.kind === "Observance" && e.data.date);
+
+type Marker = { title: string; href?: string };
+const markersOn = (month: number, day: number): Marker[] => {
+  const marks: Marker[] = [];
+  for (const o of observances) {
+    const start = o.data.date!;
+    const end = o.data.endDate ?? start;
+    const n = (month - 1) * DAYS_IN_MONTH + day;
+    const s = (start.month - 1) * DAYS_IN_MONTH + start.day;
+    const e = (end.month - 1) * DAYS_IN_MONTH + end.day;
+    // Handles ranges that cross the new year, like Nhaalthurn.
+    const inRange = s <= e ? n >= s && n <= e : n >= s || n <= e;
+    if (inRange) marks.push({ title: o.data.title, href: historyUrl(o.id) });
+  }
+  for (const sd of seasonalDays) if (sd.month === month && sd.day === day) marks.push({ title: sd.title });
+  return marks;
+};
+
+const todayN = dayNumber(today.year, today.month, today.day);
+const todayWeekday = weekdayOf(today.day);
+const todayMarks = markersOn(today.month, today.day);
+
+const monthViews = months.map((m, i) => {
+  const month = i + 1;
+  const days = Array.from({ length: DAYS_IN_MONTH }, (_, j) => {
+    const day = j + 1;
+    const n = dayNumber(today.year, month, day);
+    return {
+      day,
+      isToday: month === today.month && day === today.day,
+      marks: markersOn(month, day),
+      moons: moons
+        .map((moon) => ({ moon, phase: principalPhase(moon, n), position: moonPosition(moon, n) }))
+        .filter((x) => x.phase),
+    };
+  });
+  const holidays = days.flatMap((d) => d.marks.map((mark) => ({ ...mark, day: d.day })));
+  // Merge multi-day holidays into one line.
+  const listed = new Map<string, { title: string; href?: string; first: number; last: number }>();
+  for (const h of holidays) {
+    const prev = listed.get(h.title);
+    if (prev) prev.last = h.day;
+    else listed.set(h.title, { title: h.title, href: h.href, first: h.day, last: h.day });
+  }
+  return { ...m, month, days, holidays: [...listed.values()] };
+});
+---
+
+<Base title="The Erodian Standard Calendar" section="sky" description="The months, weekdays, holidays and moons of the Erodian Standard Calendar.">
+  <div class="page">
+    <header class="head">
+      <h1>The Erodian Standard Calendar</h1>
+      <div class="prose dek">
+        <p>
+          The Erodian Standard Calendar was developed by the Erodian Atlasing Society to help
+          catalog the sequence of events occurring on Erodas. Although not perfect at representing
+          seasonal changes in Southern Erodas, it was created to serve the majority of the
+          planet's population in Northern Erodas. Its years are counted from the year after the
+          creation of <a href={`${import.meta.env.BASE_URL}places/the-scar/`}>the Scar</a>; years prior are referred to as negative numbers, or Pre-Scar.
+        </p>
+        <p>
+          Each of the four months is 80 days long regardless of regional seasonal differences,
+          making a year of 320 days. A month has eight weeks of ten days, each day named for an
+          Elvish element. Weekdays are seldom used outside major population centers. Most folks
+          simply count the days of the season, and the 1st of every month is always a Vitael.
+        </p>
+      </div>
+    </header>
+
+    <section class="today" aria-labelledby="today-heading">
+      <h2 id="today-heading">Today in Erodas</h2>
+      <p class="date">
+        {todayWeekday.name}, the {ordinal(today.day)} of {months[today.month - 1].name}
+      </p>
+      <ul class="moons-today">
+        {
+          moons.map((moon) => {
+            const pos = moonPosition(moon, todayN);
+            return (
+              <li>
+                <MoonGlyph position={pos} face={moon.face} size={34} />
+                <span>
+                  <a href={`${import.meta.env.BASE_URL}sky/${moon.id}/`}>{moon.name}</a>
+                  <br />
+                  {phaseName(pos)}
+                </span>
+              </li>
+            );
+          })
+        }
+      </ul>
+      {todayMarks.length > 0 && <p class="note">Observed today: {todayMarks.map((m) => m.title).join(", ")}</p>}
+      <p class="note">
+        The full calendar, with every recorded event, is kept on <a href={fantasyCalendarUrl}>Fantasy Calendar</a>.
+      </p>
+    </section>
+
+    {
+      monthViews.map((m) => (
+        <section class="month" id={m.name.toLowerCase()} aria-labelledby={`m-${m.month}`}>
+          <div class="month-head">
+            <h2 id={`m-${m.month}`}>
+              {m.name} <span class="meaning">({m.meaning})</span>
+            </h2>
+            <p>
+              {m.season}. {m.text}
+            </p>
+          </div>
+          <div class="grid-wrap">
+            <table class="grid">
+              <thead>
+                <tr>
+                  {weekdays.map((w) => (
+                    <th scope="col" title={`${w.name}, ${w.meaning}`}>
+                      <abbr title={`${w.name} (${w.meaning})`}>{w.name.slice(0, 3)}</abbr>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {Array.from({ length: DAYS_IN_MONTH / 10 }, (_, row) => (
+                  <tr>
+                    {m.days.slice(row * 10, row * 10 + 10).map((d) => (
+                      <td
+                        class:list={{ today: d.isToday, holiday: d.marks.length > 0 }}
+                        title={[...d.marks.map((x) => x.title), ...d.moons.map((x) => `${x.phase} ${x.moon.name}`)].join(", ") || undefined}
+                      >
+                        <span class="num">{d.day}</span>
+                        {d.moons.length > 0 && (
+                          <span class="cell-moons">
+                            {d.moons.map((x) => (
+                              <MoonGlyph position={x.position} face={x.moon.face} size={13} />
+                            ))}
+                          </span>
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {m.holidays.length > 0 && (
+            <ul class="holidays">
+              {m.holidays.map((h) => (
+                <li>
+                  <span class="when">
+                    {h.first === h.last ? ordinal(h.first) : `${ordinal(h.first)} to ${ordinal(h.last)}`}
+                  </span>
+                  {h.href ? <a href={h.href}>{h.title}</a> : h.title}
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      ))
+    }
+
+    <p class="note key">
+      Highlighted days are holidays and observances. Moons mark the day Têthra or Pêpra is new, at a
+      quarter, or full.
+    </p>
+  </div>
+</Base>
+
+<style>
+  .page {
+    max-width: 78rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 3.5rem) var(--gutter) 0;
+  }
+  .dek {
+    margin-top: 1rem;
+    color: var(--ink-soft);
+  }
+  .today {
+    margin-top: 2.5rem;
+    padding: 1.4rem 1.6rem;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--label-red);
+    max-width: 46rem;
+  }
+  .today h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--ink-soft);
+  }
+  .date {
+    font-family: var(--font-sc);
+    font-size: 1.9rem;
+    margin: 0.2rem 0 1rem;
+  }
+  .moons-today {
+    list-style: none;
+    margin: 0 0 1rem;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2.5rem;
+  }
+  .moons-today li {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    line-height: 1.3;
+    font-size: 1.02rem;
+  }
+  .note {
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+    font-style: italic;
+    margin: 0.3rem 0 0;
+  }
+  .month {
+    margin-top: 3rem;
+  }
+  .month-head h2 {
+    margin: 0;
+  }
+  .meaning {
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .month-head p {
+    margin: 0.3rem 0 1rem;
+    color: var(--ink-soft);
+    max-width: var(--measure);
+    font-size: 1.02rem;
+  }
+  .grid-wrap {
+    overflow-x: auto;
+  }
+  .grid {
+    width: 100%;
+    max-width: 60rem;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+  .grid th {
+    font-family: var(--font-sc);
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    padding: 0.3rem 0;
+    text-align: left;
+  }
+  .grid abbr {
+    text-decoration: none;
+  }
+  .grid td {
+    position: relative;
+    height: 2.7rem;
+    vertical-align: top;
+    padding: 0.25rem 0.35rem;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    font-size: 0.95rem;
+  }
+  .grid td.holiday {
+    background: color-mix(in srgb, var(--label-red) 14%, var(--paper));
+  }
+  .grid td.today {
+    outline: 2px solid var(--label-red);
+    outline-offset: -2px;
+  }
+  .grid td.today .num {
+    font-weight: 700;
+    color: var(--label-red);
+  }
+  .cell-moons {
+    position: absolute;
+    right: 0.25rem;
+    bottom: 0.25rem;
+    display: flex;
+    gap: 2px;
+  }
+  .holidays {
+    list-style: none;
+    padding: 0;
+    margin: 0.8rem 0 0;
+    font-size: 1.02rem;
+  }
+  .holidays .when {
+    display: inline-block;
+    min-width: 7.5rem;
+    color: var(--ink-soft);
+  }
+  .key {
+    margin-top: 2rem;
+  }
+  @media (max-width: 40rem) {
+    .grid {
+      min-width: 34rem;
+    }
+  }
+</style>

@@ -1,0 +1,97 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import MoonGlyph from "../../components/MoonGlyph.astro";
+import { base, getSky } from "../../lib/content";
+import { dayNumber, moonPosition, moons, phaseName, today } from "../../data/calendar";
+
+export async function getStaticPaths() {
+  const sky = await getSky();
+  return sky.map((body) => ({ params: { slug: body.id }, props: { body } }));
+}
+
+const { body } = Astro.props as { body: CollectionEntry<"sky"> };
+const { Content } = await render(body);
+const d = body.data;
+const moon = moons.find((m) => m.id === body.id);
+const pos = moon ? moonPosition(moon, dayNumber(today.year, today.month, today.day)) : null;
+---
+
+<Base title={d.title} section="sky" description={d.description}>
+  <article class="entry">
+    <header>
+      <p class="trail"><a href={`${base}/sky/`}>Calendar and sky</a> / {d.kind}</p>
+      <div class="title-row">
+        {moon && pos !== null && <MoonGlyph position={pos} face={moon.face} size={64} />}
+        <h1>{d.title}</h1>
+      </div>
+      <p class="dek">{d.description}</p>
+      {
+        d.cycle && (
+          <dl class="attrs">
+            <div>
+              <dt>Cycle</dt>
+              <dd>{d.cycle}</dd>
+            </div>
+            {pos !== null && (
+              <div>
+                <dt>Tonight</dt>
+                <dd>{phaseName(pos)}</dd>
+              </div>
+            )}
+          </dl>
+        )
+      }
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</Base>
+
+<style>
+  .entry {
+    max-width: 78rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 3.5rem) var(--gutter) 0;
+  }
+  .trail {
+    margin: 0 0 0.6rem;
+    font-size: 1rem;
+    color: var(--ink-soft);
+  }
+  .trail a {
+    color: inherit;
+  }
+  .title-row {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+  }
+  .dek {
+    max-width: var(--measure);
+    margin: 0.7rem 0 0;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.45;
+  }
+  .attrs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 3rem;
+    margin: 1.2rem 0 0;
+  }
+  .attrs dt {
+    font-family: var(--font-sc);
+    color: var(--ink-soft);
+    font-size: 1rem;
+  }
+  .attrs dd {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+  .prose {
+    margin-top: 2.5rem;
+  }
+</style>
