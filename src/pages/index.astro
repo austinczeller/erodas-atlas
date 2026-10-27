@@ -65,7 +65,10 @@ const sections = [
         the collected text and may immerse yourself in the rich and mysterious land which many of
         the authors of this text call home.
       </p>
-      <p class="signature">Regards,<br />The Erodian Atlasing Society</p>
+      <div class="signature">
+        <img src={`${base}/brand/society-emblem.svg`} alt="The emblem of the Erodian Atlasing Society: two moons rising from an open atlas" width="96" height="96" />
+        <p>Regards,<br />The Erodian Atlasing Society</p>
+      </div>
     </div>
 
     <ul class="contents" aria-label="Sections of the atlas">
@@ -115,8 +118,19 @@ const sections = [
     max-width: var(--measure);
   }
   .signature {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
     font-style: italic;
     color: var(--ink-soft);
+  }
+  .signature img {
+    width: 6rem;
+    height: 6rem;
+    flex: none;
+  }
+  .signature p {
+    margin: 0;
   }
   .contents {
     list-style: none;

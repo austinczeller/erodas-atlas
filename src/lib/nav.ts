@@ -91,6 +91,20 @@ export async function getNav(): Promise<NavMenu[]> {
         { heading: "Celestial bodies", links: sky.map(link("sky")) },
       ],
     },
-    { id: "next-adventure", label: "Next Adventure", href: `${base}/next-adventure/` },
+    {
+      id: "next-adventure",
+      label: "Next Adventure",
+      href: `${base}/next-adventure/`,
+      overview: "The next campaign",
+      groups: [
+        {
+          heading: "Dithoria City",
+          links: [
+            { label: "Character creation", href: `${base}/next-adventure/` },
+            { label: "Inspiration board", href: `${base}/inspiration/` },
+          ],
+        },
+      ],
+    },
   ].map((menu) => ({ ...menu, groups: menu.groups?.filter((g) => g.links.length > 0) }));
 }

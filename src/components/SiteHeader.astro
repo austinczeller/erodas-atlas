@@ -14,7 +14,10 @@ const menus = await getNav();
 
 <header class="masthead">
   <div class="masthead-inner">
-    <a class="wordmark" href={`${base}/`}>The Erodian Atlas</a>
+    <a class="wordmark" href={`${base}/`}>
+      <img src={`${base}/brand/society-emblem.svg`} alt="" width="40" height="40" />
+      The Erodian Atlas
+    </a>
     <nav aria-label="Atlas sections">
       <ul class="menubar">
         {
@@ -96,12 +99,22 @@ const menus = await getNav();
     gap: 0.5rem 2rem;
   }
   .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
     font-family: var(--font-sc);
     font-weight: 700;
     font-size: 1.45rem;
     color: inherit;
     text-decoration: none;
     letter-spacing: 0.02em;
+  }
+  .wordmark img {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  .masthead-inner {
+    align-items: center;
   }
   .menubar {
     list-style: none;

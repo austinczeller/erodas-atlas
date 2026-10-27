@@ -10,6 +10,7 @@ const EXTRA_PAGES = {
   "next adventure": "next-adventure/",
   calendar: "calendar/",
   gods: "gods/",
+  "inspiration board": "inspiration/",
   "notable figures": "figures/",
   "the erodian standard calendar": "calendar/",
 };

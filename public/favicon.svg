@@ -1,4 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#1d3a3e"/>
-  <path d="M16 5l3 8h8l-6.5 5 2.5 8-7-5-7 5 2.5-8L5 13h8z" fill="none" stroke="#e07a62" stroke-width="2" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Emblem of the Erodian Atlasing Society">
+  <!-- Pêpra, the small yellow moon, half hidden behind Têthra as it usually is -->
+  <circle cx="270" cy="104" r="34" fill="#b88a2e" stroke="#1f3428" stroke-width="2.5"/>
+  <!-- Têthra, the large white moon, rising from the open atlas -->
+  <circle cx="200" cy="170" r="94" fill="#ffffff" stroke="#1f3428" stroke-width="4"/>
+  <g fill="none" stroke="#1f3428" stroke-width="1.6" opacity="0.35">
+    <circle cx="168" cy="140" r="15"/>
+    <circle cx="232" cy="188" r="21"/>
+    <circle cx="182" cy="212" r="9"/>
+    <circle cx="238" cy="134" r="7"/>
+  </g>
+  <!-- a few stars -->
+  <g fill="#1f3428">
+    <path d="M86,92 l3,9 9,3 -9,3 -3,9 -3,-9 -9,-3 9,-3 z"/>
+    <path d="M326,170 l2,6 6,2 -6,2 -2,6 -2,-6 -6,-2 6,-2 z"/>
+    <path d="M110,196 l2,5 5,2 -5,2 -2,5 -2,-5 -5,-2 5,-2 z"/>
+  </g>
+  <!-- the open book; its pages cover the bottom of Têthra -->
+  <path d="M200,262 C160,240 105,238 58,252 L58,336 C105,322 160,324 200,346 Z" fill="#ffffff" stroke="#1f3428" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M200,262 C240,240 295,238 342,252 L342,336 C295,322 240,324 200,346 Z" fill="#ffffff" stroke="#1f3428" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M200,262 L200,346" stroke="#1f3428" stroke-width="4"/>
+  <!-- lines of text on the left page -->
+  <g stroke="#1f3428" stroke-width="1.6" stroke-linecap="round" opacity="0.55">
+    <path d="M78,270 C110,262 150,262 184,276"/>
+    <path d="M78,286 C110,278 150,278 184,292"/>
+    <path d="M78,302 C110,294 150,294 184,308"/>
+    <path d="M78,318 C110,310 140,310 160,318"/>
+  </g>
+  <!-- Korlornium: a horseshoe of land around the Scar -->
+  <path d="M226,316 C222,282 248,264 274,266 C300,268 318,286 320,312" fill="none" stroke="#b88a2e" stroke-width="13" stroke-linecap="round"/>
+  <path d="M226,316 C222,282 248,264 274,266 C300,268 318,286 320,312" fill="none" stroke="#1f3428" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
 </svg>
