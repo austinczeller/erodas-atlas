@@ -6,6 +6,8 @@ Whispers of unrest are growing inside the city's white walls. Citizens have begu
 
 Magic is the dividing line. The church teaches that all magic is the power of [[Dithoria]], and the Keeper's Council restricts its use within the walls. Only wizards certified by the Arcane Order of Dithoria may practice it, and the Arcane Order, who act as the city's police, check the permits of everyone from merchants to passers-by. Most citizens no longer believe magic belongs to the god, but some fundamentalists still do. There is a real tension between these fundamentalist Dithorians and the city's moderate and non-religious citizens, and the argument splits families, guilds and congregations.
 
+Session 1 will begin with your character on a boat en route to [[Dithoria City]].
+
 ## Questions to help build a character
 
 1. What problem does your character want to solve, and what is stopping them?

@@ -11,7 +11,7 @@ The war was between the religious entities of [[Dithoria City]], the militia of 
 
 ## The Ascendants
 
-Dithorian histories record that the Rellian Dynasty created powerful weapons, known as the Ascendants, in order to take over [[Caldrith]]. The Ascendant Ritual was performed with the assistance of [[Goghdor]] magic, which granted immortality and superhuman powers to the worthy. Not all were capable of wielding such power, and many fell to corruption. In modern texts the Ascendants are framed as power hungry people who used an unnatural and unholy magic to gain power.
+Dithorian histories record that the Rellian Dynasty created powerful weapons, known as the Ascendants, in order to take over [[Caldrith]]. The Ascendant Ritual was performed with the assistance of [[Goghdor]] magic, which granted immortality and superhuman powers to the worthy. Not all were capable of wielding such power, and many fell to corruption. In modern texts the Ascendants are said to have used their powers to conquer land in [[Caldrith]].
 
 In [[Siroth]], the Rellian Dynasty is remembered for its ideals of equality, and for wishing to cease the exploitation of [[Siroth]]'s natural resources and magical ley lines.
 
