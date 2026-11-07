@@ -22,4 +22,12 @@ Itchy Finger, Sharktit, Floatbelly, Coffin Rock, the Seat of Thalmyre, Knife Gap
 
 ## Known piracy groups
 
-Murky Bellows, the Drifting Bastards, the Rumskinners, the Gatorpaw Gang, the Rattails, the Blackwake Company and the Stray Dogs.
+The Hydra is made up of the three major gangs of [[The Scar]]: the Stray Dogs, Murky Bellows and the Rattails.
+
+- **The Stray Dogs:** one of the oldest piracy groups in [[Korlornium]], based on Itchy Finger, the northernmost island. Unfriendly to outsiders and deeply secretive. They watch the northern approaches to the Scar and sell what they see. Founding members of the Hydra.
+- **Murky Bellows:** a classic piracy gang led by [[Hitchcock 'Goldentooth' Derose]], headquartered in the Seat of Thalmyre. They seem welcoming and are willing to help, at a cost. They control many of the trade routes out of [[Dithoria City]]. Founding members of the Hydra.
+- **The Rattails:** a new, unhinged gang that is all about explosions, led by the very young Tompkins "The Squealer" Longtooth. They joined the Hydra by blowing up the headquarters of the Barnicle Boyz.
+- **The Blackwake Company:** they share the Seat of Thalmyre with Murky Bellows and hold its southern end, including Knife Gap and its toll bridge. They control much of the spice trade in Korlornium. Once a founding member of the Hydra, they lost their seat at the Tidecrest Tournament of 1190.
+- **The Gatorpaw Gang:** a middle power gang of fishermen led by the jolly Jorgen "Gary" Jehiamis Fisher. They control the trade of Sand Gulper, a luxury meat in [[Dithoria City]].
+- **The Drifting Bastards:** a gang of misfits from Bent Peter, mostly goblins and kobolds, flying a driftwood anchor flag. They have little say in the Hydra, but they are known for chaotic boarding raids, including flinging kobolds onto enemy decks.
+- **The Rumskinners:** they run facilities in the islands that the elite of the Scar like to visit.
